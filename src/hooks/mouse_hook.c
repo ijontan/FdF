@@ -1,27 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   mouse_hook.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/02/17 16:16:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/02 21:31:59 by itan             ###   ########.fr       */
+/*   Created: 2023/03/02 21:30:50 by itan              #+#    #+#             */
+/*   Updated: 2023/03/02 21:36:46 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	main(int ac, char const **av)
+int	mouse_hook(int keycode, t_vars *vars)
 {
-	t_vars	vars;
-
-	(void)ac;
-	(void)av;
-	vars.mlx = mlx_init();
-	vars.win = mlx_new_window(vars.mlx, 500, 500, "my win");
-	mlx_key_hook(vars.win, &key_hook, &vars);
-	mlx_mouse_hook(vars.win, &mouse_hook, &vars);
-	mlx_loop(vars.mlx);
+	(void)vars;
+	if (keycode == 1)
+		ft_printf("left click\n");
+	if (keycode == 2)
+		ft_printf("right click\n");
+	if (keycode == 3)
+		ft_printf("middle click\n");
+	if (keycode == 4)
+		ft_printf("scroll up\n");
+	if (keycode == 5)
+		ft_printf("scroll down\n");
 	return (0);
 }
