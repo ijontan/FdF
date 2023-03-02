@@ -6,7 +6,7 @@
 #    By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:55:16 by itan              #+#    #+#              #
-#    Updated: 2023/03/01 19:38:07 by itan             ###   ########.fr        #
+#    Updated: 2023/03/02 12:42:42 by itan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ INC		= $(addprefix -I , $(shell find includes -type d -name includes))
 LIBDIR	= includes/libft
 LIB		= -L$(LIBDIR) -lft
 LIBNAME	= libft.a
+MLXLIB	= -I /usr/local/include -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
 # this is for debugging
 DNAME	= debug.out
 # DDIR	= test
@@ -63,22 +64,22 @@ UNDERLINE	= \x1B[3m
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 				@mkdir -p $(OBJ_DIRS)
-				@printf "$(YELLOW)$(BRIGHT)Generating %25s\t$(NORMAL)%.40s\r" "$(NAME) src objects..." $@
+				@printf "$(YELLOW)$(BRIGHT)Generating %25s\t$(NORMAL)%40s\r" "$(NAME) src objects..." $@
 				@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(DDIR)/%.o:	$(DDIR)/%.c
 				@mkdir -p $(DDIR)
-				@printf "$(YELLOW)$(BRIGHT)Generating %25s\t$(NORMAL)%.40s\r" "$(NAME) debug objects..." $@
+				@printf "$(YELLOW)$(BRIGHT)Generating %25s\t$(NORMAL)%40s\r" "$(NAME) debug objects..." $@
 				@$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(NAME)::	$(LIBDIR)/$(LIBNAME) $(OBJ) 
 			@printf "\n$(MAGENTA)$(BRIGHT)Compiling $(NAME)...          \n"
-			@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) $(LIB)
+			@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) $(LIB) $(MLXLIB)
 			@printf "$(GREEN)COMPLETE!!\n\n"
 
 $(DNAME):	$(SRC) $(DSRC) $(LIBDIR)/$(LIBNAME)
 			@printf "\n$(MAGENTA)Compiling $(DNAME) for $(NAME)...          \n"
-			@$(CC) $(CFLAGS) $(DFLAGS) $(INC) $(SRC) $(DSRC) -o $(DNAME) $(LIB)
+			@$(CC) $(CFLAGS) $(DFLAGS) $(INC) $(SRC) $(DSRC) -o $(DNAME) $(LIB) $(MLXLIB)
 			@printf "$(GREEN)COMPLETE!!\n\n"
 
 $(LIBDIR)/$(LIBNAME):
