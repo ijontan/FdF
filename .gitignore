@@ -1,3 +1,4 @@
 *.o
 *.out
 fdf
+debug.out.dSYM
