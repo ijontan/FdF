@@ -30,13 +30,21 @@ INC		= $(addprefix -I , $(shell find includes -type d -name includes))
 LIBDIR	= includes/libft
 LIB		= -L$(LIBDIR) -lft
 LIBNAME	= libft.a
-MLXLIB	= -I /usr/local/include -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
 # this is for debugging
 DNAME	= debug.out
 # DDIR	= test
 DFLAGS	= -fsanitize=address -fdiagnostics-color=always -g3
 # DSRC	= $(shell find $(DDIR) -name '*.c')
 DOBJ	= $(DSRC:.c=.o)
+
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Linux)
+MLXLIB	= -I /usr/local/include -L/usr/local/lib -lbsd -lmlx -lXext -lX11
+endif
+ifeq ($(UNAME), Darwin)
+MLXLIB	= -I /usr/local/include -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+endif
 
 
 # ** COLORS ** #
