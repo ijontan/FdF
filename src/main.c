@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:16:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/07 21:28:20 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/08 05:47:47 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	apply_rotation(t_fdf *fdf)
 	tmp_v[0] = 1;
 	tmp_v[1] = 1;
 	tmp_v[2] = 0;
-	quaternion_from_axis_angle(tmp_v, PI_4, &q1);
+	quaternion_from_axis_angle(tmp_v, PI_4 + 1, &q1);
 	// quaternion_x_rotation(PI_4, &q1);
 	quaternion_z_rotation(PI_4, &q2);
 	i = 0;
@@ -47,20 +47,20 @@ int	main(int ac, char const **av)
 	t_vars	vars;
 	t_fdf	*fdf;
 
-	vars.win_h = 1080;
-	vars.win_w = 1920;
+	vars.win_h = 500;
+	vars.win_w = 500;
 	if (ac != 2)
 		return (1);
 	fdf = malloc(sizeof(t_fdf));
 	parse_map((char *)(av[1]), fdf);
-	print_map(fdf);
+	// print_map(fdf);
 	create_vertices(fdf);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.win_w, vars.win_h, "my win");
 	apply_rotation(fdf);
 	display(&vars, fdf);
-	mlx_key_hook(vars.win, &key_hook, &vars);
-	mlx_mouse_hook(vars.win, &mouse_hook, &vars);
+	mlx_key_hook(vars.win, &key_hook, fdf);
+	mlx_mouse_hook(vars.win, &mouse_hook, (void *)fdf);
 	mlx_loop(vars.mlx);
 	return (0);
 }

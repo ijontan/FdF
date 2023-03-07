@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/07 17:23:31 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/08 05:39:13 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,19 @@ typedef struct s_fdf
 
 /* --------------------------------- display -------------------------------- */
 void				display(t_vars *var, t_fdf *fdf);
+int					rgba_to_int(double r, double g, double b, double a);
+void				add_pixel(t_offset offset, t_vars *var, t_fdf *fdf,
+						int color);
+void				plot_line(t_vars *var, t_fdf *fdf, t_offset offset1,
+						t_offset offset2);
 /* ---------------------------------- parse --------------------------------- */
 int					parse_map(char *file_name, t_fdf *fdf);
 void				print_map(t_fdf *data);
 void				create_vertices(t_fdf *fdf);
 
 /* ---------------------------------- hooks --------------------------------- */
-int					key_hook(int keycode, t_vars *vars);
-int					mouse_hook(int keycode, t_vars *vars);
+int					key_hook(int keycode, t_fdf *fdf);
+int					mouse_hook(int keycode, void *param);
 /* ------------------------------- projection ------------------------------- */
 t_offset			isometric_projection(double v[3]);
 /* ------------------------------- quaternion ------------------------------- */

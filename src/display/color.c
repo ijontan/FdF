@@ -1,21 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_hook.c                                         :+:      :+:    :+:   */
+/*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 21:16:20 by itan              #+#    #+#             */
-/*   Updated: 2023/03/08 05:25:39 by itan             ###   ########.fr       */
+/*   Created: 2023/03/08 02:09:01 by itan              #+#    #+#             */
+/*   Updated: 2023/03/08 03:23:19 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
-
-int	key_hook(int keycode, t_fdf *fdf)
+int	rgba_to_int(double r, double g, double b, double a)
 {
-	(void)keycode;
-	(void)fdf;
-	ft_printf("%i\n", keycode);
-	return (0);
+	int	color;
+
+	color = 0;
+	color |= (int)(b * 255);
+	color |= (int)(g * 255) << 8;
+	color |= (int)(r * 255) << 16;
+	color |= (int)(a * 255) << 24;
+	return (color);
 }
