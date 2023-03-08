@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/08 05:39:13 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/09 03:04:54 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,6 @@
 #  define QUATERNION_EPS (1e-4)
 # endif
 
-typedef struct s_vars
-{
-	void			*mlx;
-	void			*win;
-	int				win_h;
-	int				win_w;
-}					t_vars;
 typedef struct s_vertex
 {
 	double			v[3];
@@ -48,6 +41,13 @@ typedef struct s_offset
 	int				x;
 	int				y;
 }					t_offset;
+typedef struct s_image
+{
+	int				pixel_bits;
+	int				line_bytes;
+	int				endian;
+	char			*buffer;
+}					t_image;
 
 typedef struct s_fdf
 {
@@ -55,27 +55,31 @@ typedef struct s_fdf
 	int				grid_width;
 	int				grid_height;
 	t_vertex		**v_grid;
-	int				pixel_bits;
-	int				line_bytes;
-	int				endian;
-	char			*buffer;
+	t_image			*image;
 }					t_fdf;
 
+typedef struct s_vars
+{
+	void			*mlx;
+	void			*win;
+	int				win_h;
+	int				win_w;
+	t_fdf			*fdf;
+}					t_vars;
 /* --------------------------------- display -------------------------------- */
-void				display(t_vars *var, t_fdf *fdf);
-int					rgba_to_int(double r, double g, double b, double a);
-void				add_pixel(t_offset offset, t_vars *var, t_fdf *fdf,
-						int color);
-void				plot_line(t_vars *var, t_fdf *fdf, t_offset offset1,
-						t_offset offset2);
+void				display(t_vars *var);
+int					rgba_to_int(int r, int g, int b, double a);
+int					hue_to_int(unsigned int hue, double a);
+void				add_pixel(t_offset offset, t_vars *var, int color);
+void				plot_line(t_vars *var, t_offset offset1, t_offset offset2);
 /* ---------------------------------- parse --------------------------------- */
 int					parse_map(char *file_name, t_fdf *fdf);
 void				print_map(t_fdf *data);
 void				create_vertices(t_fdf *fdf);
 
 /* ---------------------------------- hooks --------------------------------- */
-int					key_hook(int keycode, t_fdf *fdf);
-int					mouse_hook(int keycode, void *param);
+int					key_hook(int keycode, t_vars *vars);
+int					mouse_hook(int keycode, t_vars *vars);
 /* ------------------------------- projection ------------------------------- */
 t_offset			isometric_projection(double v[3]);
 /* ------------------------------- quaternion ------------------------------- */

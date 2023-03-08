@@ -6,16 +6,16 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 21:16:20 by itan              #+#    #+#             */
-/*   Updated: 2023/03/08 05:25:39 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/08 23:46:33 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	key_hook(int keycode, t_fdf *fdf)
+int	key_hook(int keycode, t_vars *vars)
 {
 	(void)keycode;
-	(void)fdf;
+	(void)vars;
 	ft_printf("%i\n", keycode);
 	return (0);
 }
