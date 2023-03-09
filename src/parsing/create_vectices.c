@@ -6,33 +6,43 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:12:40 by itan              #+#    #+#             */
-/*   Updated: 2023/03/09 20:32:17 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 01:41:02 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#define SIZE_L 2
+
+void	init_vertex(t_vertex *vertex)
+{
+	vertex->top = NULL;
+	vertex->bot = NULL;
+	vertex->left = NULL;
+	vertex->right = NULL;
+}
 
 static void	assign_vertices(t_fdf *fdf, t_vertex **v_grid)
 {
 	int	i;
 	int	j;
+	int	distance;
 
+	distance = 1 + 2000 / (fdf->grid_height * fdf->grid_width);
 	i = 0;
 	while (i < fdf->grid_height)
 	{
 		j = 0;
 		while (j < fdf->grid_width)
 		{
-			v_grid[i][j].v[1] = (double)(i - fdf->grid_height / 2) * 2 * SIZE_L
-				+ SIZE_L;
-			v_grid[i][j].v[0] = (double)(j - fdf->grid_width / 2) * 2 * SIZE_L
-				+ SIZE_L;
+			if ((fdf->grid)[i][j] > fdf->max_height)
+				fdf->max_height = (fdf->grid)[i][j];
+			if ((fdf->grid)[i][j] < fdf->min_height)
+				fdf->min_height = (fdf->grid)[i][j];
+			v_grid[i][j].v[1] = (double)(i - fdf->grid_height / 2) * 2
+				* distance + distance;
+			v_grid[i][j].v[0] = (double)(j - fdf->grid_width / 2) * 2 * distance
+				+ distance;
 			v_grid[i][j].v[2] = (double)((fdf->grid)[i][j]);
-			v_grid[i][j].top = NULL;
-			v_grid[i][j].bot = NULL;
-			v_grid[i][j].left = NULL;
-			v_grid[i][j].right = NULL;
+			init_vertex(&(v_grid[i][j]));
 			j++;
 		}
 		i++;
@@ -70,10 +80,13 @@ void	create_vertices(t_fdf *fdf)
 	int			i;
 
 	i = 0;
+	fdf->max_height = -2147483648;
+	fdf->min_height = +2147483647;
 	v_grid = ft_calloc(fdf->grid_height, sizeof(t_vertex *));
 	while (i < fdf->grid_height)
 		v_grid[i++] = ft_calloc(fdf->grid_width, sizeof(t_vertex));
 	assign_vertices(fdf, v_grid);
 	link_vertices(fdf, v_grid);
+	ft_printf("max:%i, min:%i\n", fdf->max_height, fdf->min_height);
 	fdf->v_grid = v_grid;
 }

@@ -55,6 +55,8 @@ typedef struct s_fdf
 	int				**grid;
 	int				grid_width;
 	int				grid_height;
+	int				max_height;
+	int				min_height;
 	t_vertex		**v_grid;
 	t_image			*image;
 }					t_fdf;
