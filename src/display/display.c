@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:16:13 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 04:19:24 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 06:52:27 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	display(t_vars *var)
 	void	*image;
 	t_fdf	*fdf;
 	t_image	*image_v;
+	double	tmp_v[3];
 
 	fdf = var->fdf;
 	fdf->image = malloc(sizeof(t_image));
@@ -88,8 +89,14 @@ void	display(t_vars *var)
 	{
 		j = -1;
 		while (++j < fdf->grid_width)
-			quaternion_rotate(&(fdf->orientation), fdf->v_grid[i][j].v,
+		{
+			tmp_v[0] = fdf->v_grid[i][j].v[0];
+			tmp_v[1] = fdf->v_grid[i][j].v[1];
+			tmp_v[2] = fdf->v_grid[i][j].v[2];
+			tmp_v[2] *= fdf->value_weight;
+			quaternion_rotate(&(fdf->orientation), tmp_v,
 					fdf->v_grid_global[i][j].v);
+		}
 	}
 	i = -1;
 	while (++i < fdf->grid_height)
@@ -97,23 +104,31 @@ void	display(t_vars *var)
 		j = -1;
 		while (++j < fdf->grid_width)
 		{
-			// if (check_outofbound(orthographic_projection(fdf->v_grid[i][j].v),
+			// if (check_outofbound(orthographic_projection(fdf->v_grid_global[i][j].v),
 			// 						var,
-			// 						20))
+			// 						fdf->line_dis_2 * 2) &&
+			// 	check_outofbound(orthographic_projection(fdf->v_grid_global[i][j
+			// 				+ 1].v),
+			// 						var,
+			// 						fdf->line_dis_2 * 2))
 			// 	continue ;
-			// if (fdf->v_grid[i][j].right)
-			// 	plot_line(var, orthographic_projection(fdf->v_grid[i][j].v),
-			// 			orthographic_projection(fdf->v_grid[i][j].right->v));
-			// if (fdf->v_grid[i][j].top)
-			// 	plot_line(var, orthographic_projection(fdf->v_grid[i][j].v),
-			// 			orthographic_projection(fdf->v_grid[i][j].top->v));
+			// if (fdf->v_grid_global[i][j].right)
+			// 	plot_line(var,
+			// 				orthographic_projection(fdf->v_grid_global[i][j].v),
+			// 				orthographic_projection(fdf->v_grid_global[i][j].right->v),
+			// 				get_hue_right(fdf, i, j, 1));
+			// if (fdf->v_grid_global[i][j].bot)
+			// 	plot_line(var,
+			// 				orthographic_projection(fdf->v_grid_global[i][j].v),
+			// 				orthographic_projection(fdf->v_grid_global[i][j].bot->v),
+			// 				get_hue_bot(fdf, i, j, 1));
 			if (check_outofbound(perspective_projection(fdf->v_grid_global[i][j].v,
-														600,
+														fdf->focal_len,
 														25),
 									var,
 									fdf->line_dis_2 * 2))
 				continue ;
-			if (fdf->v_grid_global[i][j].v[2] > 600)
+			if (fdf->v_grid_global[i][j].v[2] > fdf->focal_len)
 				continue ;
 			if (fdf->line_dis_2 * 2 < 0.5)
 			{
@@ -122,20 +137,20 @@ void	display(t_vars *var)
 					&& fdf->v_grid_global[i][j + 3].right)
 					plot_line(var,
 								perspective_projection(fdf->v_grid_global[i][j].v,
-														600,
+														fdf->focal_len,
 														25),
 								perspective_projection(fdf->v_grid_global[i][j
-										+ 4].v, 600, 25),
+										+ 4].v, fdf->focal_len, 25),
 								get_hue_right(fdf, i, j, 4));
 				if (fdf->v_grid_global[i][j].bot && fdf->v_grid_global[i
 					+ 1][j].bot && fdf->v_grid_global[i + 2][j].bot
 					&& fdf->v_grid_global[i + 3][j].bot)
 					plot_line(var,
 								perspective_projection(fdf->v_grid_global[i][j].v,
-														600,
+														fdf->focal_len,
 														25),
 								perspective_projection(fdf->v_grid_global[i
-										+ 4][j].v, 600, 25),
+										+ 4][j].v, fdf->focal_len, 25),
 								get_hue_bot(fdf, i, j, 4));
 				j += 3;
 			}
@@ -145,19 +160,19 @@ void	display(t_vars *var)
 					+ 1].right)
 					plot_line(var,
 								perspective_projection(fdf->v_grid_global[i][j].v,
-														600,
+														fdf->focal_len,
 														25),
 								perspective_projection(fdf->v_grid_global[i][j
-										+ 2].v, 600, 25),
+										+ 2].v, fdf->focal_len, 25),
 								get_hue_right(fdf, i, j, 2));
 				if (fdf->v_grid_global[i][j].bot && fdf->v_grid_global[i
 					+ 1][j].bot)
 					plot_line(var,
 								perspective_projection(fdf->v_grid_global[i][j].v,
-														600,
+														fdf->focal_len,
 														25),
 								perspective_projection(fdf->v_grid_global[i
-										+ 2][j].v, 600, 25),
+										+ 2][j].v, fdf->focal_len, 25),
 								get_hue_bot(fdf, i, j, 2));
 				j++;
 			}
@@ -166,18 +181,18 @@ void	display(t_vars *var)
 				if (fdf->v_grid_global[i][j].right)
 					plot_line(var,
 								perspective_projection(fdf->v_grid_global[i][j].v,
-														600,
+														fdf->focal_len,
 														25),
 								perspective_projection(fdf->v_grid_global[i][j
-										+ 1].v, 600, 25),
+										+ 1].v, fdf->focal_len, 25),
 								get_hue_right(fdf, i, j, 1));
 				if (fdf->v_grid_global[i][j].bot)
 					plot_line(var,
 								perspective_projection(fdf->v_grid_global[i][j].v,
-														600,
+														fdf->focal_len,
 														25),
 								perspective_projection(fdf->v_grid_global[i
-										+ 1][j].v, 600, 25),
+										+ 1][j].v, fdf->focal_len, 25),
 								get_hue_bot(fdf, i, j, 1));
 			}
 		}

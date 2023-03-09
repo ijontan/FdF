@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 05:03:41 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 06:46:07 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_image
 
 typedef struct s_hold
 {
+	double			t;
 	bool			left_m;
 	bool			right_m;
 	bool			middle_m;
@@ -72,6 +73,8 @@ typedef struct s_fdf
 	int				max_height;
 	int				min_height;
 	double			line_dis_2;
+	double			value_weight;
+	double			focal_len;
 	t_vertex		**v_grid;
 	t_quaternion	orientation;
 	t_slerp_var		slerp_var;

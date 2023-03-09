@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:12:40 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 04:16:21 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 06:14:40 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void	assign_vertices(t_fdf *fdf, t_vertex **v_grid)
 	int	j;
 
 	fdf->line_dis_2 = 1 + 2000 / (fdf->grid_height * fdf->grid_width);
+	fdf->value_weight = 1;
 	i = 0;
 	while (i < fdf->grid_height)
 	{
@@ -59,6 +60,7 @@ static void	link_vertices(t_fdf *fdf)
 		j = -1;
 		while (++j < fdf->grid_width)
 		{
+			init_vertex(&(fdf->v_grid_global[i][j]));
 			if (i != 0)
 				fdf->v_grid_global[i][j].top = &(fdf->v_grid_global[i - 1][j]);
 			if (j != 0)
