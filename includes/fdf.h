@@ -113,4 +113,8 @@ void				quaternion_rotate(t_quaternion *q, double v[3],
 						double output[3]);
 void				quaternion_slerp(t_quaternion *q1, t_quaternion *q2,
 						double t, t_quaternion *output);
+// transform
+void				scale(double v[3], double scale_factor);
+void				translate(double v[3], double x, double y, double z);
+
 #endif
