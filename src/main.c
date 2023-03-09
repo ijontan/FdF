@@ -6,42 +6,20 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:16:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 04:59:33 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 06:46:44 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	set_global(t_fdf *fdf)
+void	set_isomatric(t_fdf *fdf)
 {
-	int				i;
-	int				j;
 	t_quaternion	q1;
-	t_quaternion	q2;
-	double			tmp_v[3];
 
-	tmp_v[0] = 1;
-	tmp_v[1] = 1;
-	tmp_v[2] = 0;
-	// quaternion_z_rotation(0, &q1);
-	q1 = quaternion_create(-3, -1, 0, -1);
-	quaternion_normalize(&q1, &q1);
-	quaternion_from_axis_angle(tmp_v, 0, &q2);
-	// quaternion_x_rotation(-PI_4, &q1);
-	// quaternion_x_rotation(0, &q1);
-	// quaternion_z_rotation(0, &q2);
-	i = 0;
-	while (i < fdf->grid_height)
-	{
-		j = 0;
-		while (j < fdf->grid_width)
-		{
-			quaternion_rotate(&q1, fdf->v_grid[i][j].v, tmp_v);
-			quaternion_rotate(&q2, tmp_v, fdf->v_grid[i][j].v);
-			j++;
-		}
-		i++;
-	}
+	quaternion_z_rotation(-PI_4, &q1);
+	quaternion_multiply(&q1, &fdf->orientation, &fdf->orientation);
+	quaternion_x_rotation(-PI_4, &q1);
+	quaternion_multiply(&q1, &fdf->orientation, &fdf->orientation);
 }
 
 int	main(int ac, char const **av)
@@ -53,6 +31,7 @@ int	main(int ac, char const **av)
 	vars.win_h = 500;
 	vars.win_w = 500;
 	vars.fdf = &fdf;
+	fdf.focal_len = 600;
 	if (ac != 2)
 		return (1);
 	// i = -1;
@@ -69,6 +48,7 @@ int	main(int ac, char const **av)
 	mlx_hook(vars.win, 6, 0, mouse_move_hook, &vars);
 	mlx_mouse_hook(vars.win, mouse_hook_down, &vars);
 	mlx_key_hook(vars.win, key_hook, &vars);
+	set_isomatric(&fdf);
 	// apply_rotation(vars.fdf);
 	display(&vars);
 	mlx_loop_hook(vars.mlx, loop_hook, &vars);
