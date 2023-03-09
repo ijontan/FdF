@@ -1,29 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_hook.c                                         :+:      :+:    :+:   */
+/*   loop_hook.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/02 21:16:20 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 04:53:03 by itan             ###   ########.fr       */
+/*   Created: 2023/03/10 04:56:54 by itan              #+#    #+#             */
+/*   Updated: 2023/03/10 05:00:49 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-int	key_hook(int keycode, t_vars *vars)
+int	loop_hook(t_vars *vars)
 {
-	if (keycode == 49)
-	{
-	}
-	if (keycode == 50)
-	{
-	}
-	if (keycode == 96)
-	{
-	}
-	(void)vars;
-	ft_printf("%i\n", keycode);
-	return (0);
 }

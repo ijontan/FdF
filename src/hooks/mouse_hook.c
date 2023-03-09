@@ -6,14 +6,19 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 21:30:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/09 20:09:15 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 04:47:56 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 #include <stdio.h>
 
-int	mouse_hook(int keycode, int x, int y, t_vars *vars)
+/*
+** https://gamedev.stackexchange.com/questions/16212/
+quaternions-and-rotation-around-world-axis
+** this is one line of url
+*/
+int	mouse_hook_down(int keycode, int x, int y, t_vars *vars)
 {
 	int				i;
 	int				j;
@@ -25,81 +30,89 @@ int	mouse_hook(int keycode, int x, int y, t_vars *vars)
 	// quaternion_x_rotation(PI_4, &q1);
 	if (keycode == 1)
 	{
+		fdf->hold.left_m = true;
 		fdf = vars->fdf;
-		quaternion_x_rotation(0.05, &q2);
-		i = 0;
-		i = 0;
-		while (i < fdf->grid_height)
-		{
-			j = 0;
-			while (j < fdf->grid_width)
-			{
-				quaternion_rotate(&q2, fdf->v_grid[i][j].v,
-						fdf->v_grid[i][j].v);
-				j++;
-			}
-			i++;
-		}
+		quaternion_y_rotation(0.1, &q2);
+		quaternion_normalize(&q2, &q2);
+		quaternion_multiply(&q2, &(fdf->orientation), &(fdf->orientation));
+		// quaternion_multiply(&(fdf->orientation), &q2, &(fdf->orientation));
 		display(vars);
 	}
 	if (keycode == 2)
 	{
+		fdf->hold.right_m = true;
 		fdf = vars->fdf;
-		quaternion_x_rotation(-0.05, &q2);
-		i = 0;
-		i = 0;
-		while (i < fdf->grid_height)
-		{
-			j = 0;
-			while (j < fdf->grid_width)
-			{
-				quaternion_rotate(&q2, fdf->v_grid[i][j].v,
-						fdf->v_grid[i][j].v);
-				j++;
-			}
-			i++;
-		}
+		quaternion_y_rotation(-0.1, &q2);
+		quaternion_normalize(&q2, &q2);
+		quaternion_multiply(&q2, &(fdf->orientation), &(fdf->orientation));
+		// quaternion_multiply(&(fdf->orientation), &q2, &(fdf->orientation));
 		display(vars);
 	}
 	if (keycode == 3)
-		ft_printf("middle click\n");
+		fdf->hold.middle_m = true;
 	if (keycode == 4)
 	{
 		fdf = vars->fdf;
-		quaternion_z_rotation(0.05, &q2);
-		i = 0;
-		i = 0;
-		while (i < fdf->grid_height)
-		{
-			j = 0;
-			while (j < fdf->grid_width)
-			{
-				quaternion_rotate(&q2, fdf->v_grid[i][j].v,
-						fdf->v_grid[i][j].v);
-				j++;
-			}
-			i++;
-		}
+		quaternion_x_rotation(-0.1, &q2);
+		quaternion_normalize(&q2, &q2);
+		quaternion_multiply(&q2, &(fdf->orientation), &(fdf->orientation));
+		// quaternion_multiply(&(fdf->orientation), &q2, &(fdf->orientation));
 		display(vars);
 	}
 	if (keycode == 5)
 	{
-		quaternion_z_rotation(-0.05, &q2);
+		quaternion_x_rotation(0.1, &q2);
+		quaternion_normalize(&q2, &q2);
+		quaternion_multiply(&q2, &(fdf->orientation), &(fdf->orientation));
+		// quaternion_multiply(&(fdf->orientation), &q2, &(fdf->orientation));
+		display(vars);
+	}
+	if (keycode == 8)
+	{
 		i = 0;
 		while (i < fdf->grid_height)
 		{
 			j = 0;
 			while (j < fdf->grid_width)
 			{
-				quaternion_rotate(&q2, fdf->v_grid[i][j].v,
-						fdf->v_grid[i][j].v);
+				scale(fdf->v_grid[i][j].v, 0.9);
 				j++;
 			}
 			i++;
 		}
+		fdf->line_dis_2 *= 0.9;
 		display(vars);
 	}
-	ft_printf("%i\n", keycode);
+	if (keycode == 9)
+	{
+		i = 0;
+		while (i < fdf->grid_height)
+		{
+			j = 0;
+			while (j < fdf->grid_width)
+			{
+				scale(fdf->v_grid[i][j].v, 1.0 / 0.9);
+				j++;
+			}
+			i++;
+		}
+		fdf->line_dis_2 *= 1.0 / 0.9;
+		display(vars);
+	}
+	// ft_printf("%i\n", keycode);
+	return (0);
+}
+
+int	mouse_hook_up(int keycode, int x, int y, t_vars *vars)
+{
+	(void)x;
+	(void)y;
+	if (keycode == 1)
+		vars->fdf->hold.left_m = false;
+	if (keycode == 2)
+		vars->fdf->hold.right_m = false;
+	if (keycode == 3)
+		vars->fdf->hold.middle_m = false;
 	return (0);
 }
 

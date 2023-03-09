@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 02:00:42 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 05:03:41 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,20 @@ typedef struct s_image
 	char			*buffer;
 }					t_image;
 
+typedef struct s_hold
+{
+	bool			left_m;
+	bool			right_m;
+	bool			middle_m;
+}					t_hold;
+
+typedef struct s_slerp_var
+{
+	t_quaternion	start_o;
+	t_quaternion	end_o;
+	double			t;
+}					t_slerp_var;
+
 typedef struct s_fdf
 {
 	int				**grid;
@@ -57,8 +71,13 @@ typedef struct s_fdf
 	int				grid_height;
 	int				max_height;
 	int				min_height;
+	double			line_dis_2;
 	t_vertex		**v_grid;
+	t_quaternion	orientation;
+	t_slerp_var		slerp_var;
+	t_vertex		**v_grid_global;
 	t_image			*image;
+	t_hold			hold;
 }					t_fdf;
 
 typedef struct s_vars
@@ -83,8 +102,10 @@ void				create_vertices(t_fdf *fdf);
 
 /* ---------------------------------- hooks --------------------------------- */
 int					key_hook(int keycode, t_vars *vars);
-int					mouse_hook(int keycode, int x, int y, t_vars *vars);
+int					mouse_hook_down(int keycode, int x, int y, t_vars *vars);
+int					mouse_hook_up(int keycode, int x, int y, t_vars *vars);
 int					mouse_move_hook(int x, int y, t_vars *vars);
+int					loop_hook(t_vars *vars);
 /* ------------------------------- projection ------------------------------- */
 t_offset			orthographic_projection(double v[3]);
 t_offset			perspective_projection(double v[3], double focal,

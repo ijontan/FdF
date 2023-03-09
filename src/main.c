@@ -6,13 +6,13 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:16:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 01:45:04 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 04:59:33 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	apply_rotation(t_fdf *fdf)
+void	set_global(t_fdf *fdf)
 {
 	int				i;
 	int				j;
@@ -63,12 +63,15 @@ int	main(int ac, char const **av)
 	create_vertices(vars.fdf);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.win_w, vars.win_h, "my win");
-	// mlx_hook(vars.win, 2, 0, mouse_hook, &vars);
-	// mlx_hook(vars.win, 4, 0, mouse_hook, &vars);
+	// mlx_hook(vars.win, 2, 0, key_hook, &vars);
+	// mlx_hook(vars.win, 4, 0, mouse_hook_down, &vars);
+	fdf.orientation = quaternion_create_id();
 	mlx_hook(vars.win, 6, 0, mouse_move_hook, &vars);
-	mlx_mouse_hook(vars.win, mouse_hook, &vars);
-	apply_rotation(vars.fdf);
+	mlx_mouse_hook(vars.win, mouse_hook_down, &vars);
+	mlx_key_hook(vars.win, key_hook, &vars);
+	// apply_rotation(vars.fdf);
 	display(&vars);
+	mlx_loop_hook(vars.mlx, loop_hook, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
 }
