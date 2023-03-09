@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   isometric.c                                        :+:      :+:    :+:   */
+/*   orthographic.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:08:06 by itan              #+#    #+#             */
-/*   Updated: 2023/03/07 17:17:01 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/09 14:39:43 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-t_offset	isometric_projection(double v[3])
+t_offset	orthographic_projection(double v[3])
 {
 	t_offset	offset;
 

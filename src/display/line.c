@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/08 03:31:20 by itan              #+#    #+#             */
-/*   Updated: 2023/03/09 04:00:59 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/09 15:06:59 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,13 +96,16 @@ void	plot_line(t_vars *vars, t_offset offset1, t_offset offset2)
 			offset3.y = x;
 			offset4.x = intersect_y - 1;
 			offset4.y = x;
-			// add_pixel(offset3, vars, rgba_to_int(255, 255, 255,
-			// 			rfrac_num(intersect_y)));
-			// add_pixel(offset4, vars, rgba_to_int(255, 255, 255,
-			// 			frac_num(intersect_y)));
-			(void)offset4;
+			add_pixel(offset3, vars, rgba_to_int(255, 255, 255,
+						rfrac_num(intersect_y)));
+			add_pixel(offset4, vars, rgba_to_int(255, 255, 255,
+						frac_num(intersect_y)));
+			// add_pixel(offset3, vars, hue_to_int(hue++, rfrac_num(intersect_y)));
+			// add_pixel(offset4, vars, hue_to_int(hue++, frac_num(intersect_y)));
+			// (void)offset4;
 			// add_pixel(offset3, vars, rgba_to_int(255, 255, 255, 1));
-			add_pixel(offset3, vars, hue_to_int(hue++, 1));
+			// add_pixel(offset3, vars, 0xffffffff);
+			// add_pixel(offset3, vars, hue_to_int(hue++, 1));
 			// add_pixel(offset3, vars,  rgba_to_int(255, 255, 255, 0.5));
 			// add_pixel(offset4, vars,  rgba_to_int(255, 255, 255, 0.5));
 			intersect_y += gradient;
@@ -118,12 +121,15 @@ void	plot_line(t_vars *vars, t_offset offset1, t_offset offset2)
 			offset4.x = x;
 			// pixel coverage is determined by fractional
 			// part of y co-ordinate
-			// add_pixel(offset3, vars, rgba_to_int(255, 255, 255,
-			// 			rfrac_num(intersect_y)));
-			// add_pixel(offset4, vars, rgba_to_int(255, 255, 255,
-			// 			frac_num(intersect_y)));
+			add_pixel(offset3, vars, rgba_to_int(255, 255, 255,
+						rfrac_num(intersect_y)));
+			add_pixel(offset4, vars, rgba_to_int(255, 255, 255,
+						frac_num(intersect_y)));
+			// add_pixel(offset3, vars, hue_to_int(hue++, rfrac_num(intersect_y)));
+			// add_pixel(offset4, vars, hue_to_int(hue++, frac_num(intersect_y)));
 			// add_pixel(offset3, vars, rgba_to_int(255, 255, 255, 1));
-			add_pixel(offset3, vars, hue_to_int(hue++, 1));
+			// add_pixel(offset3, vars, 0xffffffff);
+			// add_pixel(offset3, vars, hue_to_int(hue++, 1));
 			// add_pixel(offset3, vars,  rgba_to_int(255, 255, 255, 0.5));
 			// add_pixel(offset4, vars, rgba_to_int(255, 255, 255, 0.5));
 			intersect_y += gradient;

@@ -6,12 +6,13 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/09 03:04:54 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/09 20:19:41 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 # define FDF_H
+# define BUFFER_SIZE 1000
 # include "libft.h"
 # include <fcntl.h>
 # include <mlx.h>
@@ -79,9 +80,13 @@ void				create_vertices(t_fdf *fdf);
 
 /* ---------------------------------- hooks --------------------------------- */
 int					key_hook(int keycode, t_vars *vars);
-int					mouse_hook(int keycode, t_vars *vars);
+int					mouse_hook(int keycode, int x, int y, t_vars *vars);
+int					mouse_move_hook(int x, int y, t_vars *vars);
 /* ------------------------------- projection ------------------------------- */
-t_offset			isometric_projection(double v[3]);
+t_offset			orthographic_projection(double v[3]);
+t_offset			perspective_projection(double v[3], double focal,
+						double screen_p);
+
 /* ------------------------------- quaternion ------------------------------- */
 
 void				quaternion_from_axis_angle(double axis[3], double angle,

@@ -6,11 +6,12 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 13:12:40 by itan              #+#    #+#             */
-/*   Updated: 2023/03/09 04:49:25 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/09 20:32:17 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#define SIZE_L 2
 
 static void	assign_vertices(t_fdf *fdf, t_vertex **v_grid)
 {
@@ -23,8 +24,10 @@ static void	assign_vertices(t_fdf *fdf, t_vertex **v_grid)
 		j = 0;
 		while (j < fdf->grid_width)
 		{
-			v_grid[i][j].v[0] = (double)(i - fdf->grid_width / 2) * 2 + 1;
-			v_grid[i][j].v[1] = (double)(j - fdf->grid_height / 2) * 2 + 1;
+			v_grid[i][j].v[1] = (double)(i - fdf->grid_height / 2) * 2 * SIZE_L
+				+ SIZE_L;
+			v_grid[i][j].v[0] = (double)(j - fdf->grid_width / 2) * 2 * SIZE_L
+				+ SIZE_L;
 			v_grid[i][j].v[2] = (double)((fdf->grid)[i][j]);
 			v_grid[i][j].top = NULL;
 			v_grid[i][j].bot = NULL;
