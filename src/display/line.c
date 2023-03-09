@@ -50,7 +50,7 @@ float	rfrac_num(float x)
 // 0<=brightness<=1. We can use your own library
 // to draw on screen
 
-void	plot_line(t_vars *vars, t_offset offset1, t_offset offset2)
+void	plot_line(t_vars *vars, t_offset offset1, t_offset offset2,int hue)
 {
 	int				steep;
 	float			dx;
@@ -62,9 +62,9 @@ void	plot_line(t_vars *vars, t_offset offset1, t_offset offset2)
 	int				x;
 	t_offset		offset3;
 	t_offset		offset4;
-	unsigned int	hue;
+	// unsigned int	hue;
 
-	hue = 5;
+	// hue = 5;
 	steep = absolute(offset2.y - offset1.y) > absolute(offset2.x - offset1.x);
 	// swap the co-ordinates if slope > 1 or we
 	// draw backwards
@@ -96,14 +96,15 @@ void	plot_line(t_vars *vars, t_offset offset1, t_offset offset2)
 			offset3.y = x;
 			offset4.x = intersect_y - 1;
 			offset4.y = x;
-			add_pixel(offset3, vars, rgba_to_int(255, 255, 255,
-						rfrac_num(intersect_y)));
-			add_pixel(offset4, vars, rgba_to_int(255, 255, 255,
-						frac_num(intersect_y)));
+			// add_pixel(offset3, vars, rgba_to_int(255, 255, 255,
+			// 			rfrac_num(intersect_y)));
+			// add_pixel(offset4, vars, rgba_to_int(255, 255, 255,
+			// 			frac_num(intersect_y)));
 			// add_pixel(offset3, vars, hue_to_int(hue++, rfrac_num(intersect_y)));
 			// add_pixel(offset4, vars, hue_to_int(hue++, frac_num(intersect_y)));
 			// (void)offset4;
-			// add_pixel(offset3, vars, rgba_to_int(255, 255, 255, 1));
+			add_pixel(offset3, vars, hue_to_int(hue,rfrac_num(intersect_y)));
+			add_pixel(offset4, vars, hue_to_int(hue,frac_num(intersect_y)));
 			// add_pixel(offset3, vars, 0xffffffff);
 			// add_pixel(offset3, vars, hue_to_int(hue++, 1));
 			// add_pixel(offset3, vars,  rgba_to_int(255, 255, 255, 0.5));
@@ -121,13 +122,14 @@ void	plot_line(t_vars *vars, t_offset offset1, t_offset offset2)
 			offset4.x = x;
 			// pixel coverage is determined by fractional
 			// part of y co-ordinate
-			add_pixel(offset3, vars, rgba_to_int(255, 255, 255,
-						rfrac_num(intersect_y)));
-			add_pixel(offset4, vars, rgba_to_int(255, 255, 255,
-						frac_num(intersect_y)));
+			// add_pixel(offset3, vars, rgba_to_int(255, 255, 255,
+			// 			rfrac_num(intersect_y)));
+			// add_pixel(offset4, vars, rgba_to_int(255, 255, 255,
+			// 			frac_num(intersect_y)));
 			// add_pixel(offset3, vars, hue_to_int(hue++, rfrac_num(intersect_y)));
 			// add_pixel(offset4, vars, hue_to_int(hue++, frac_num(intersect_y)));
-			// add_pixel(offset3, vars, rgba_to_int(255, 255, 255, 1));
+			add_pixel(offset3, vars, hue_to_int(hue,rfrac_num(intersect_y)));
+			add_pixel(offset4, vars, hue_to_int(hue,frac_num(intersect_y)));
 			// add_pixel(offset3, vars, 0xffffffff);
 			// add_pixel(offset3, vars, hue_to_int(hue++, 1));
 			// add_pixel(offset3, vars,  rgba_to_int(255, 255, 255, 0.5));

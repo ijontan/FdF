@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/09 20:19:41 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 02:00:42 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ void				display(t_vars *var);
 int					rgba_to_int(int r, int g, int b, double a);
 int					hue_to_int(unsigned int hue, double a);
 void				add_pixel(t_offset offset, t_vars *var, int color);
-void				plot_line(t_vars *var, t_offset offset1, t_offset offset2);
+void				plot_line(t_vars *vars, t_offset offset1, t_offset offset2,
+						int hue);
 /* ---------------------------------- parse --------------------------------- */
 int					parse_map(char *file_name, t_fdf *fdf);
 void				print_map(t_fdf *data);

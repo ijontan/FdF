@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:16:13 by itan              #+#    #+#             */
-/*   Updated: 2023/03/09 20:32:33 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 01:46:36 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,26 @@ void	add_pixel(t_offset offset, t_vars *var, int color)
 	}
 }
 
+static int	get_hue_right(t_fdf *fdf, int i, int j)
+{
+	if (fdf->grid[i][j] >= fdf->grid[i][j + 1])
+		return ((double)fdf->grid[i][j] / (double)(fdf->max_height
+				- fdf->min_height) * 24);
+	else
+		return ((double)fdf->grid[i][j + 1] / (double)(fdf->max_height
+				- fdf->min_height) * 24);
+}
+
+static int	get_hue_bot(t_fdf *fdf, int i, int j)
+{
+	if (fdf->grid[i][j] >= fdf->grid[i + 1][j])
+		return ((double)fdf->grid[i][j] / (double)(fdf->max_height
+				- fdf->min_height) * 24);
+	else
+		return ((double)fdf->grid[i + 1][j] / (double)(fdf->max_height
+				- fdf->min_height) * 24);
+}
+
 void	display(t_vars *var)
 {
 	int		i;
@@ -58,7 +78,6 @@ void	display(t_vars *var)
 	fdf = var->fdf;
 	fdf->image = malloc(sizeof(t_image));
 	image_v = fdf->image;
-	mlx_clear_window(var->mlx, var->win);
 	image = mlx_new_image(var->mlx, var->win_w, var->win_h);
 	image_v->buffer = mlx_get_data_addr(image, &(image_v->pixel_bits),
 			&(image_v->line_bytes), &(image_v->endian));
@@ -92,14 +111,15 @@ void	display(t_vars *var)
 				plot_line(var, perspective_projection(fdf->v_grid[i][j].v, 600,
 							25),
 						perspective_projection(fdf->v_grid[i][j].right->v, 600,
-							25));
-			if (fdf->v_grid[i][j].top)
+							25), get_hue_right(fdf, i, j));
+			if (fdf->v_grid[i][j].bot)
 				plot_line(var, perspective_projection(fdf->v_grid[i][j].v, 600,
 							25),
-						perspective_projection(fdf->v_grid[i][j].top->v, 600,
-							25));
+						perspective_projection(fdf->v_grid[i][j].bot->v, 600,
+							25), get_hue_bot(fdf, i, j));
 		}
 	}
+	mlx_clear_window(var->mlx, var->win);
 	mlx_put_image_to_window(var->mlx, var->win, image, 0, 0);
 	mlx_destroy_image(var->mlx, image);
 }
