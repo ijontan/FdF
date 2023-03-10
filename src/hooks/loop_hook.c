@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 04:56:54 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 17:49:13 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/11 00:10:01 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,7 @@ int	loop_hook(t_vars *vars)
 	if (vars->fdf->slerp_var.t <= 1.05 && vars->fdf->slerp_var.t >= 1.0
 		&& !vars->fdf->cycle_count)
 	{
-		slerp_var = &(vars->fdf->slerp_var);
-		vars->fdf->orientation = slerp_var->end_o;
-		slerp_var->t += 0.05;
+		vars->fdf->slerp_var.t += 0.10;
 		display(vars);
 	}
 	return (0);
