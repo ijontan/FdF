@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 06:46:07 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 16:41:36 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct s_slerp_var
 {
 	t_quaternion	start_o;
 	t_quaternion	end_o;
+	t_quaternion	out_o;
+	int				sign;
 	double			t;
 }					t_slerp_var;
 
@@ -78,6 +80,8 @@ typedef struct s_fdf
 	t_vertex		**v_grid;
 	t_quaternion	orientation;
 	t_slerp_var		slerp_var;
+	int				cycle_per_frame;
+	int				cycle_count;
 	t_vertex		**v_grid_global;
 	t_image			*image;
 	t_hold			hold;

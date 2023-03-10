@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 21:30:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 04:47:56 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 16:25:38 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	mouse_hook_down(int keycode, int x, int y, t_vars *vars)
 		fdf->line_dis_2 *= 1.0 / 0.9;
 		display(vars);
 	}
-	// ft_printf("%i\n", keycode);
+	ft_printf("%i\n", keycode);
 	return (0);
 }
 
@@ -119,6 +119,8 @@ int	mouse_hook_up(int keycode, int x, int y, t_vars *vars)
 int	mouse_move_hook(int x, int y, t_vars *vars)
 {
 	(void)vars;
-	ft_printf("x:%i,y:%i\n", x, y);
+	(void)x;
+	(void)y;
+	// ft_printf("x:%i,y:%i\n", x, y);
 	return (0);
 }

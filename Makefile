@@ -6,7 +6,7 @@
 #    By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:55:16 by itan              #+#    #+#              #
-#    Updated: 2023/03/09 16:12:02 by itan             ###   ########.fr        #
+#    Updated: 2023/03/10 21:00:41 by itan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,27 +49,27 @@ endif
 
 
 # ** COLORS ** #
-BLACK		= \x1B[30m
-RED			= \x1B[31m
-GREEN		= \x1B[32m
-YELLOW		= \x1B[33m
-BLUE		= \x1B[34m
-MAGENTA		= \x1B[35m
-CYAN		= \x1B[36m
-WHITE		= \x1B[37m
-B_BLACK		= \x1B[40m
-B_RED		= \x1B[41m
-B_GREEN		= \x1B[42m
-B_YELLOW	= \x1B[43m
-B_BLUE		= \x1B[44m
-B_MAGENTA	= \x1B[45m
-B_CYAN		= \x1B[46m
-B_WHITE		= \x1B[47m
-BRIGHT		= \x1B[1m
-NORMAL		= \x1B[0m
-BLINK		= \x1B[4m
-REVERSE		= \x1B[5m
-UNDERLINE	= \x1B[3m
+BLACK		= \033[30m
+RED			= \033[31m
+GREEN		= \033[32m
+YELLOW		= \033[33m
+BLUE		= \033[34m
+MAGENTA		= \033[35m
+CYAN		= \033[36m
+WHITE		= \033[37m
+B_BLACK		= \033[40m
+B_RED		= \033[41m
+B_GREEN		= \033[42m
+B_YELLOW	= \033[43m
+B_BLUE		= \033[44m
+B_MAGENTA	= \033[45m
+B_CYAN		= \033[46m
+B_WHITE		= \033[47m
+BRIGHT		= \033[1m
+NORMAL		= \033[0m
+BLINK		= \033[4m
+REVERSE		= \033[5m
+UNDERLINE	= \033[3m
 
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 				@mkdir -p $(OBJ_DIRS)

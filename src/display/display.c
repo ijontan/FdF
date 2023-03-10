@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:16:13 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 06:52:27 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/10 20:49:52 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,17 @@ void	add_pixel(t_offset offset, t_vars *var, int color)
 				+ var->win_w / 2) * image->pixel_bits / 8);
 	if (image->endian == 1)
 	{
-		image->buffer[pixel + 0] += (color >> 24);
-		image->buffer[pixel + 1] += (color >> 16) & 0xFF;
-		image->buffer[pixel + 2] += (color >> 8) & 0xFF;
-		image->buffer[pixel + 3] += color & 0xFF;
+		image->buffer[pixel + 0] = (color >> 24);
+		image->buffer[pixel + 1] = (color >> 16) & 0xFF;
+		image->buffer[pixel + 2] = (color >> 8) & 0xFF;
+		image->buffer[pixel + 3] = color & 0xFF;
 	}
 	else
 	{
-		image->buffer[pixel + 3] += (color >> 24);
-		image->buffer[pixel + 2] += (color >> 16) & 0xFF;
-		image->buffer[pixel + 1] += (color >> 8) & 0xFF;
-		image->buffer[pixel + 0] += color & 0xFF;
+		image->buffer[pixel + 3] = (color >> 24);
+		image->buffer[pixel + 2] = (color >> 16) & 0xFF;
+		image->buffer[pixel + 1] = (color >> 8) & 0xFF;
+		image->buffer[pixel + 0] = color & 0xFF;
 	}
 }
 
@@ -94,8 +94,12 @@ void	display(t_vars *var)
 			tmp_v[1] = fdf->v_grid[i][j].v[1];
 			tmp_v[2] = fdf->v_grid[i][j].v[2];
 			tmp_v[2] *= fdf->value_weight;
-			quaternion_rotate(&(fdf->orientation), tmp_v,
-					fdf->v_grid_global[i][j].v);
+			if (fdf->slerp_var.t < 1)
+				quaternion_rotate(&(fdf->slerp_var.out_o), tmp_v,
+						fdf->v_grid_global[i][j].v);
+			else
+				quaternion_rotate(&(fdf->orientation), tmp_v,
+						fdf->v_grid_global[i][j].v);
 		}
 	}
 	i = -1;
@@ -126,11 +130,43 @@ void	display(t_vars *var)
 														fdf->focal_len,
 														25),
 									var,
-									fdf->line_dis_2 * 2))
+									fdf->line_dis_2 * 4))
 				continue ;
 			if (fdf->v_grid_global[i][j].v[2] > fdf->focal_len)
 				continue ;
-			if (fdf->line_dis_2 * 2 < 0.5)
+			if (fdf->line_dis_2 * 2 < 2)
+			{
+				if (fdf->v_grid_global[i][j].right && fdf->v_grid_global[i][j
+					+ 1].right && fdf->v_grid_global[i][j + 2].right
+					&& fdf->v_grid_global[i][j + 3].right
+					&& fdf->v_grid_global[i][j + 4].right
+					&& fdf->v_grid_global[i][j + 5].right
+					&& fdf->v_grid_global[i][j + 6].right
+					&& fdf->v_grid_global[i][j + 7].right
+					&& fdf->v_grid_global[i][j + 8].right)
+					plot_line(var,
+								perspective_projection(fdf->v_grid_global[i][j].v,
+														fdf->focal_len,
+														25),
+								perspective_projection(fdf->v_grid_global[i][j
+										+ 8].v, fdf->focal_len, 25),
+								get_hue_right(fdf, i, j, 8));
+				if (fdf->v_grid_global[i][j].bot && fdf->v_grid_global[i
+					+ 1][j].bot && fdf->v_grid_global[i + 2][j].bot
+					&& fdf->v_grid_global[i + 3][j].bot && fdf->v_grid_global[i
+					+ 4][j].bot && fdf->v_grid_global[i + 5][j].bot
+					&& fdf->v_grid_global[i + 6][j].bot && fdf->v_grid_global[i
+					+ 7][j].bot && fdf->v_grid_global[i + 8][j].bot)
+					plot_line(var,
+								perspective_projection(fdf->v_grid_global[i][j].v,
+														fdf->focal_len,
+														25),
+								perspective_projection(fdf->v_grid_global[i
+										+ 8][j].v, fdf->focal_len, 25),
+								get_hue_bot(fdf, i, j, 8));
+				j += 7;
+			}
+			if (fdf->line_dis_2 * 2 < 4)
 			{
 				if (fdf->v_grid_global[i][j].right && fdf->v_grid_global[i][j
 					+ 1].right && fdf->v_grid_global[i][j + 2].right
@@ -154,7 +190,7 @@ void	display(t_vars *var)
 								get_hue_bot(fdf, i, j, 4));
 				j += 3;
 			}
-			if (fdf->line_dis_2 * 2 < 2)
+			if (fdf->line_dis_2 * 2 < 12)
 			{
 				if (fdf->v_grid_global[i][j].right && fdf->v_grid_global[i][j
 					+ 1].right)
