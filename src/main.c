@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:16:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/13 20:48:29 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/14 00:17:20 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,24 @@ void	set_isomatric(t_fdf *fdf)
 	fdf->slerp_var.start_o = fdf->orientation;
 	fdf->slerp_var.end_o = quaternion_create_id();
 	fdf->slerp_var.out_o = quaternion_create_id();
+	fdf->slerp_var.t = 1.1;
+	fdf->slerp_var.sign = 1;
 }
 
-static void	fdf_init(t_fdf *fdf)
+static void	fdf_init(t_fdf *fdf, char *name)
 {
+	int	fd;
+
+	fd = open(name, O_RDONLY);
+	if (fd == -1)
+	{
+		ft_printf("%sfail to open file, abort!%s\n", "\033[1;31m",
+			"\033[0m");
+		exit(1);
+	}
 	fdf->focal_len = 300;
 	fdf->cycle_per_frame = 400;
 	fdf->cycle_count = 0;
-	fdf->slerp_var.t = 1.1;
-	fdf->slerp_var.sign = 1;
 	fdf->orientation = quaternion_create_id();
 	fdf->global_position[0] = 0;
 	fdf->global_position[1] = 0;
@@ -58,7 +67,7 @@ int	main(int ac, char const **av)
 	vars.fdf = &fdf;
 	if (ac != 2)
 		return (1);
-	fdf_init(&fdf);
+	fdf_init(&fdf, (char *)av[1]);
 	parse_map((char *)(av[1]), vars.fdf);
 	create_vertices(vars.fdf);
 	vars.mlx = mlx_init();

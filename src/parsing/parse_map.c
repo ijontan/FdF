@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:06:41 by itan              #+#    #+#             */
-/*   Updated: 2023/03/13 17:50:12 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/14 01:20:43 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,27 @@ static int	**list2d_add(int **prev, int *new_item)
 	return (dst);
 }
 
-static int	*get_line(int fd, int *width)
+static void	free_and_quit(char **l1, int **l2)
+{
+	int	i;
+
+	if (l2)
+	{
+		i = -1;
+		while (l2[++i])
+			free(l2[i]);
+		free(l2);
+	}
+	i = -1;
+	while (l1[++i])
+		free(l1[i]);
+	free(l1);
+	ft_printf("%serror parsing map, abort!%s\n", "\033[1;31m",
+		"\033[0m");
+	exit(1);
+}
+
+static int	*get_line(int fd, int *width, int **l2)
 {
 	char	*tmp;
 	char	**tmp_2d;
@@ -56,7 +76,7 @@ static int	*get_line(int fd, int *width)
 	if (*width == 0)
 		*width = len;
 	if (*width != len)
-		exit(1);
+		free_and_quit(tmp_2d, l2);
 	dst = ft_calloc(len, sizeof(int));
 	while (--len >= 0)
 		dst[len] = ft_atoi(tmp_2d[len]);
@@ -74,12 +94,12 @@ int	parse_map(char *file_name, t_fdf *fdf)
 
 	fdf->grid_width = 0;
 	fd = open(file_name, O_RDONLY);
-	tmp = get_line(fd, &(fdf->grid_width));
 	dst = NULL;
+	tmp = get_line(fd, &(fdf->grid_width), dst);
 	while (tmp)
 	{
 		dst = list2d_add(dst, tmp);
-		tmp = get_line(fd, &(fdf->grid_width));
+		tmp = get_line(fd, &(fdf->grid_width), dst);
 	}
 	fdf->grid = dst;
 	fdf->grid_height = 0;
