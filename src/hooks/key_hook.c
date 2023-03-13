@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 21:16:20 by itan              #+#    #+#             */
-/*   Updated: 2023/03/11 00:08:23 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/13 15:36:20 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	key_hook(int keycode, t_vars *vars)
 	int				i;
 	int				j;
 
-	// if (keycode == 18)
-	if (keycode == 49)
+	if (keycode == 18)
+	// if (keycode == 49)
 	{
 		vars->fdf->slerp_var.start_o = vars->fdf->orientation;
 		vars->fdf->slerp_var.end_o = quaternion_create_id();
@@ -33,8 +33,8 @@ int	key_hook(int keycode, t_vars *vars)
 		vars->fdf->slerp_var.sign = 1;
 		vars->fdf->orientation = vars->fdf->slerp_var.end_o;
 	}
-	// if (keycode == 19)/
-	if (keycode == 50)
+	if (keycode == 19)
+	// if (keycode == 50)
 	{
 		vars->fdf->slerp_var.start_o = vars->fdf->orientation;
 		vars->fdf->slerp_var.end_o = vars->fdf->orientation;
@@ -43,21 +43,60 @@ int	key_hook(int keycode, t_vars *vars)
 		vars->fdf->slerp_var.sign = -1;
 		vars->fdf->orientation = vars->fdf->slerp_var.end_o;
 	}
+	if (keycode == 20)
+	// if (keycode == 50)
+	{
+		vars->fdf->slerp_var.start_o = vars->fdf->orientation;
+		vars->fdf->slerp_var.end_o = quaternion_create_id();
+		vars->fdf->slerp_var.t = 0.0;
+		vars->fdf->slerp_var.sign = 1;
+		vars->fdf->orientation = vars->fdf->slerp_var.end_o;
+	}
 	if (keycode == 96)
 	{
 	}
+	if (keycode == 123)
+	{
+		translate(vars->fdf->global_position, -10, 0, 0);
+		display(vars);
+	}
+	if (keycode == 124)
+	{
+		translate(vars->fdf->global_position, 10, 0, 0);
+		display(vars);
+	}
 	if (keycode == 125)
+	{
+		translate(vars->fdf->global_position, 0, 10, 0);
+		display(vars);
+	}
+	if (keycode == 126)
+	{
+		translate(vars->fdf->global_position, 0, -10, 0);
+		display(vars);
+	}
+	if (keycode == 14)
 	{
 		if (vars->fdf->focal_len >= 209715200)
 			return (1);
 		vars->fdf->focal_len = (vars->fdf->focal_len - 130) * 2;
 		display(vars);
 	}
-	if (keycode == 126)
+	if (keycode == 2)
 	{
 		if (vars->fdf->focal_len < 130)
 			return (1);
 		vars->fdf->focal_len = vars->fdf->focal_len / 2 + 130;
+		display(vars);
+	}
+	if (keycode == 0)
+	{
+		vars->fdf->value_weight -= 0.1;
+		display(vars);
+	}
+	if (keycode == 12)
+	{
+		vars->fdf->value_weight += 0.1;
 		display(vars);
 	}
 	if (keycode == 1)

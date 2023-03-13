@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:06:41 by itan              #+#    #+#             */
-/*   Updated: 2023/03/07 19:20:02 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/13 17:50:12 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ static int	*get_line(int fd, int *width)
 	len--;
 	if (*width == 0)
 		*width = len;
+	if (*width != len)
+		exit(1);
 	dst = ft_calloc(len, sizeof(int));
 	while (--len >= 0)
 		dst[len] = ft_atoi(tmp_2d[len]);
@@ -69,24 +71,21 @@ int	parse_map(char *file_name, t_fdf *fdf)
 	int	fd;
 	int	*tmp;
 	int	**dst;
-	int	width;
-	int	height;
 
-	width = 0;
+	fdf->grid_width = 0;
 	fd = open(file_name, O_RDONLY);
-	tmp = get_line(fd, &width);
+	tmp = get_line(fd, &(fdf->grid_width));
 	dst = NULL;
 	while (tmp)
 	{
 		dst = list2d_add(dst, tmp);
-		tmp = get_line(fd, &width);
+		tmp = get_line(fd, &(fdf->grid_width));
 	}
 	fdf->grid = dst;
-	fdf->grid_width = width;
-	height = 0;
-	while (dst[height])
-		height++;
-	fdf->grid_height = height;
+	fdf->grid_height = 0;
+	while (dst[fdf->grid_height])
+		(fdf->grid_height)++;
+	ft_printf("w:%i h:%i\n", fdf->grid_width, fdf->grid_height);
 	return (1);
 }
 

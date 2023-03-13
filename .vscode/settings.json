@@ -3,6 +3,7 @@
     "*.h": "cpp",
     "__locale": "c",
     "complex": "c",
-    "fdf": "c"
+    "fdf": "c",
+    "ios": "c"
   }
 }

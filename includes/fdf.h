@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 16:41:36 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/13 17:54:43 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,12 @@
 # include <stdbool.h>
 # ifndef QUATERNION_EPS
 #  define QUATERNION_EPS (1e-4)
+# endif
+# ifndef LINUX
+#  define LINUX 0
+# endif
+# ifndef DARWIN
+#  define DARWIN 0
 # endif
 
 typedef struct s_vertex
@@ -56,6 +62,8 @@ typedef struct s_hold
 	bool			left_m;
 	bool			right_m;
 	bool			middle_m;
+	double			prev_x;
+	double			prev_y;
 }					t_hold;
 
 typedef struct s_slerp_var
@@ -79,6 +87,7 @@ typedef struct s_fdf
 	double			focal_len;
 	t_vertex		**v_grid;
 	t_quaternion	orientation;
+	double			global_position[3];
 	t_slerp_var		slerp_var;
 	int				cycle_per_frame;
 	int				cycle_count;
@@ -102,10 +111,16 @@ int					hue_to_int(unsigned int hue, double a);
 void				add_pixel(t_offset offset, t_vars *var, int color);
 void				plot_line(t_vars *vars, t_offset offset1, t_offset offset2,
 						int hue);
+void				choose_node_to_draw(t_vars *var, int i, int j, int skip);
+/* ----------------------------------- err ---------------------------------- */
+void				fdf_exit(t_vars *vars, int errno);
+
 /* ---------------------------------- parse --------------------------------- */
 int					parse_map(char *file_name, t_fdf *fdf);
 void				print_map(t_fdf *data);
 void				create_vertices(t_fdf *fdf);
+void				free_2d(int **val, int len);
+void				free_vertices(t_vertex **val, int len);
 
 /* ---------------------------------- hooks --------------------------------- */
 int					key_hook(int keycode, t_vars *vars);
@@ -113,6 +128,7 @@ int					mouse_hook_down(int keycode, int x, int y, t_vars *vars);
 int					mouse_hook_up(int keycode, int x, int y, t_vars *vars);
 int					mouse_move_hook(int x, int y, t_vars *vars);
 int					loop_hook(t_vars *vars);
+int					exit_hook(t_vars *vars);
 /* ------------------------------- projection ------------------------------- */
 t_offset			orthographic_projection(double v[3]);
 t_offset			perspective_projection(double v[3], double focal,
@@ -144,7 +160,7 @@ void				quaternion_rotate(t_quaternion *q, double v[3],
 						double output[3]);
 void				quaternion_slerp(t_quaternion *q1, t_quaternion *q2,
 						double t, t_quaternion *output);
-// transform
+/* -------------------------------- transform ------------------------------- */
 void				scale(double v[3], double scale_factor);
 void				translate(double v[3], double x, double y, double z);
 

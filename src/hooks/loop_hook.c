@@ -6,11 +6,12 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 04:56:54 by itan              #+#    #+#             */
-/*   Updated: 2023/03/11 00:10:01 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/13 00:17:46 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
+#include <stdio.h>
 
 int	loop_hook(t_vars *vars)
 {
