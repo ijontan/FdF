@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:16:13 by itan              #+#    #+#             */
-/*   Updated: 2023/03/13 17:18:21 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/13 20:37:35 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static bool	check_outofbound(t_offset offset, t_vars *var, int border)
 {
 	if (offset.x >= var->win_w / 2 + border || offset.x <= -var->win_w / 2
-		- border || offset.y >= var->win_h / 2 + border || offset.y <=
-		-var->win_h / 2 - border)
+		- border || offset.y >= var->win_h / 2 + border || offset.y
+		<= -var->win_h / 2 - border)
 		return (true);
 	return (false);
 }
@@ -47,25 +47,6 @@ void	add_pixel(t_offset offset, t_vars *var, int color)
 	}
 }
 
-// static int	get_hue_right(t_fdf *fdf, int i, int j, int step)
-// {
-// 	if (fdf->grid[i][j] >= fdf->grid[i][j + step])
-// 		return ((double)fdf->grid[i][j] / (double)(fdf->max_height
-// 				- fdf->min_height) * 24);
-// 	else
-// 		return ((double)fdf->grid[i][j + step] / (double)(fdf->max_height
-// 				- fdf->min_height) * 24);
-// }
-
-// static int	get_hue_bot(t_fdf *fdf, int i, int j, int step)
-// {
-// 	if (fdf->grid[i][j] >= fdf->grid[i + step][j])
-// 		return ((double)fdf->grid[i][j] / (double)(fdf->max_height
-// 				- fdf->min_height) * 24);
-// 	else
-// 		return ((double)fdf->grid[i + step][j] / (double)(fdf->max_height
-// 				- fdf->min_height) * 24);
-// }
 void	apply_rotation_and_translation(t_fdf *fdf)
 {
 	int		i;
@@ -83,25 +64,48 @@ void	apply_rotation_and_translation(t_fdf *fdf)
 			tmp_v[2] = fdf->v_grid[i][j].v[2] * fdf->value_weight;
 			if (fdf->slerp_var.t < 1)
 				quaternion_rotate(&(fdf->slerp_var.out_o), tmp_v,
-						fdf->v_grid_global[i][j].v);
+					fdf->v_grid_global[i][j].v);
 			else
 				quaternion_rotate(&(fdf->orientation), tmp_v,
-						fdf->v_grid_global[i][j].v);
-			fdf->v_grid_global[i][j].v[0] += fdf->global_position[0];
-			fdf->v_grid_global[i][j].v[1] += fdf->global_position[1];
-			fdf->v_grid_global[i][j].v[2] += fdf->global_position[2];
+					fdf->v_grid_global[i][j].v);
+			translate(fdf->v_grid_global[i][j].v, fdf->global_position[0]
+				/ fdf->scale, fdf->global_position[1] / fdf->scale,
+				fdf->global_position[2] / fdf->scale);
+			scale(fdf->v_grid_global[i][j].v, fdf->scale);
 		}
+	}
+}
+
+static void	iterate_vertices(t_vars *var, t_fdf *fdf)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < fdf->grid_height)
+	{
+		j = -1;
+		while (++j < fdf->grid_width)
+		{
+			if (check_outofbound(
+					perspective_projection(fdf->v_grid_global[i][j].v,
+					fdf->focal_len, 25),
+				var, fdf->line_dis_2 * 4))
+				continue ;
+			if (fdf->v_grid_global[i][j].v[2] > fdf->focal_len)
+				continue ;
+			choose_node_to_draw(var, i, j, fdf->skip);
+			j += fdf->skip - 1;
+		}
+		i += fdf->skip - 1;
 	}
 }
 
 void	display(t_vars *var)
 {
-	int		i;
-	int		j;
 	void	*image;
 	t_fdf	*fdf;
 	t_image	*image_v;
-	int		skip;
 
 	fdf = var->fdf;
 	fdf->image = malloc(sizeof(t_image));
@@ -111,27 +115,9 @@ void	display(t_vars *var)
 			&(image_v->line_bytes), &(image_v->endian));
 	if (!image_v->buffer)
 		return ;
-	skip = 1 / (fdf->line_dis_2 * 0.9) + 1;
+	fdf->skip = 1 / (fdf->line_dis_2 * 0.9) + 1;
 	apply_rotation_and_translation(fdf);
-	i = -1;
-	while (++i < fdf->grid_height)
-	{
-		j = -1;
-		while (++j < fdf->grid_width)
-		{
-			if (check_outofbound(perspective_projection(fdf->v_grid_global[i][j].v,
-														fdf->focal_len,
-														25),
-									var,
-									fdf->line_dis_2 * 4))
-				continue ;
-			if (fdf->v_grid_global[i][j].v[2] > fdf->focal_len)
-				continue ;
-			choose_node_to_draw(var, i, j, skip);
-			j += skip - 1;
-		}
-		i += skip - 1;
-	}
+	iterate_vertices(var, fdf);
 	mlx_clear_window(var->mlx, var->win);
 	mlx_put_image_to_window(var->mlx, var->win, image, 0, 0);
 	mlx_destroy_image(var->mlx, image);

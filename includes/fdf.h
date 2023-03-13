@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/13 17:54:43 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/13 20:46:38 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,12 +88,14 @@ typedef struct s_fdf
 	t_vertex		**v_grid;
 	t_quaternion	orientation;
 	double			global_position[3];
+	double			scale;
 	t_slerp_var		slerp_var;
 	int				cycle_per_frame;
 	int				cycle_count;
 	t_vertex		**v_grid_global;
 	t_image			*image;
 	t_hold			hold;
+	int				skip;
 }					t_fdf;
 
 typedef struct s_vars
@@ -104,14 +106,37 @@ typedef struct s_vars
 	int				win_w;
 	t_fdf			*fdf;
 }					t_vars;
+/* -------------------------------- animation ------------------------------- */
+void				animate_to_iso(t_vars *vars);
+void				animate_to_perspec(t_vars *vars);
+void				animate_to_top(t_vars *vars);
+
 /* --------------------------------- display -------------------------------- */
 void				display(t_vars *var);
 int					rgba_to_int(int r, int g, int b, double a);
 int					hue_to_int(unsigned int hue, double a);
 void				add_pixel(t_offset offset, t_vars *var, int color);
+
+typedef struct s_plotline_var
+{
+	int				steep;
+	float			dx;
+	float			dy;
+	float			gradient;
+	float			intersect_y;
+	int				x;
+	t_offset		offset3;
+	t_offset		offset4;
+	int				hue;
+}					t_plotline_var;
+
 void				plot_line(t_vars *vars, t_offset offset1, t_offset offset2,
 						int hue);
 void				choose_node_to_draw(t_vars *var, int i, int j, int skip);
+void				swap(int *a, int *b);
+float				absolute(float x);
+float				frac_num(float x);
+float				rfrac_num(float x);
 /* ----------------------------------- err ---------------------------------- */
 void				fdf_exit(t_vars *vars, int errno);
 
@@ -142,8 +167,19 @@ double				quaternion_to_axis_angle(t_quaternion *q, double output[3]);
 void				quaternion_x_rotation(double angle, t_quaternion *output);
 void				quaternion_y_rotation(double angle, t_quaternion *output);
 void				quaternion_z_rotation(double angle, t_quaternion *output);
-void	quaternion_from_euler3(double euler[3],
-							t_quaternion *output);
+
+typedef struct s_e_convert_var
+{
+	double			cy;
+	double			sy;
+	double			cr;
+	double			sr;
+	double			cp;
+	double			sp;
+}					t_e_convert_var;
+
+void				quaternion_from_euler3(double euler[3],
+						t_quaternion *output);
 void				quaternion_to_euler3(t_quaternion *q, double output[3]);
 void				quaternion_conjugate(t_quaternion *q, t_quaternion *output);
 
@@ -156,8 +192,35 @@ double				quaternion_norm(t_quaternion *q);
 void				quaternion_normalize(t_quaternion *q, t_quaternion *output);
 void				quaternion_multiply(t_quaternion *q1, t_quaternion *q2,
 						t_quaternion *output);
+
+typedef struct s_q_rot_var
+{
+	double			ww;
+	double			xx;
+	double			yy;
+	double			zz;
+	double			wx;
+	double			wy;
+	double			wz;
+	double			xy;
+	double			xz;
+	double			yz;
+}					t_q_rot_var;
+
 void				quaternion_rotate(t_quaternion *q, double v[3],
 						double output[3]);
+
+typedef struct s_q_slerp_var
+{
+	double			cos_half_theta;
+	double			half_theta;
+	double			sin_half_theta;
+	double			ratio_a;
+	double			ratio_b;
+	t_quaternion	*q1;
+	t_quaternion	*q2;
+}					t_q_slerp_var;
+
 void				quaternion_slerp(t_quaternion *q1, t_quaternion *q2,
 						double t, t_quaternion *output);
 /* -------------------------------- transform ------------------------------- */

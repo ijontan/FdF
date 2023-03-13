@@ -12,16 +12,6 @@
 
 #include "fdf.h"
 
-typedef struct s_e_convert_var
-{
-	double	cy;
-	double	sy;
-	double	cr;
-	double	sr;
-	double	cp;
-	double	sp;
-}			t_e_convert_var;
-
 void	quaternion_from_euler3(double euler[3], t_quaternion *output)
 {
 	t_e_convert_var	var;

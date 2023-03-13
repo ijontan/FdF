@@ -6,25 +6,11 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 10:44:19 by itan              #+#    #+#             */
-/*   Updated: 2023/03/10 23:43:06 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/13 20:46:08 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-
-typedef struct s_q_rot_var
-{
-	double			ww;
-	double			xx;
-	double			yy;
-	double			zz;
-	double			wx;
-	double			wy;
-	double			wz;
-	double			xy;
-	double			xz;
-	double			yz;
-}					t_q_rot_var;
 
 void	quaternion_rotate(t_quaternion *q, double v[3], double output[3])
 {
@@ -52,17 +38,6 @@ void	quaternion_rotate(t_quaternion *q, double v[3], double output[3])
 		* var.wy * v[0] - var.yy * v[2] + 2 * var.wx * v[1] - var.xx * v[2]
 		+ var.ww * v[2];
 }
-
-typedef struct s_q_slerp_var
-{
-	double			cos_half_theta;
-	double			half_theta;
-	double			sin_half_theta;
-	double			ratio_a;
-	double			ratio_b;
-	t_quaternion	*q1;
-	t_quaternion	*q2;
-}					t_q_slerp_var;
 
 static void	quaternion_slerp_n(t_q_slerp_var *var, t_quaternion *result,
 		double t)
