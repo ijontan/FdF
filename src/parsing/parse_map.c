@@ -103,6 +103,12 @@ int	parse_map(char *file_name, t_fdf *fdf)
 	}
 	fdf->grid = dst;
 	fdf->grid_height = 0;
+	if (!dst)
+	{
+		ft_printf("%sfail to open file, abort!%s\n", "\033[1;31m",
+			"\033[0m");
+		exit(1);
+	}
 	while (dst[fdf->grid_height])
 		(fdf->grid_height)++;
 	ft_printf("w:%i h:%i\n", fdf->grid_width, fdf->grid_height);
