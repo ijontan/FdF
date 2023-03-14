@@ -76,5 +76,10 @@ int	key_hook(int keycode, t_vars *vars)
 	animate_to_view(keycode, vars);
 	arrow_keys_translate(keycode, vars);
 	other_func(keycode, vars);
+	if (keycode == 53)
+	{
+		ft_printf("%sexiting the program%s\n", "\033[1;33m", "\033[0m");
+		fdf_exit(vars, 0);
+	}
 	return (0);
 }
