@@ -105,15 +105,14 @@ void	display(t_vars *var)
 {
 	void	*image;
 	t_fdf	*fdf;
-	t_image	*image_v;
+	t_image	image_v;
 
 	fdf = var->fdf;
-	fdf->image = malloc(sizeof(t_image));
-	image_v = fdf->image;
+	fdf->image = &image_v;
 	image = mlx_new_image(var->mlx, var->win_w, var->win_h);
-	image_v->buffer = mlx_get_data_addr(image, &(image_v->pixel_bits),
-			&(image_v->line_bytes), &(image_v->endian));
-	if (!image_v->buffer)
+	image_v.buffer = mlx_get_data_addr(image, &(image_v.pixel_bits),
+			&(image_v.line_bytes), &(image_v.endian));
+	if (!image_v.buffer)
 		return ;
 	fdf->skip = 1 / (fdf->line_dis_2 * 0.9) + 1;
 	apply_rotation_and_translation(fdf);

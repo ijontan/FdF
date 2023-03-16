@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 22:06:41 by itan              #+#    #+#             */
-/*   Updated: 2023/03/14 01:20:43 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/16 14:21:37 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,7 @@ static void	free_and_quit(char **l1, int **l2)
 	while (l1[++i])
 		free(l1[i]);
 	free(l1);
-	ft_printf("%serror parsing map, abort!%s\n", "\033[1;31m",
-		"\033[0m");
+	ft_printf("%serror parsing map, abort!%s\n", "\033[1;31m", "\033[0m");
 	exit(1);
 }
 
@@ -72,7 +71,6 @@ static int	*get_line(int fd, int *width, int **l2)
 	free(tmp);
 	while (tmp_2d[len] != NULL)
 		len++;
-	len--;
 	if (*width == 0)
 		*width = len;
 	if (*width != len)
@@ -105,8 +103,7 @@ int	parse_map(char *file_name, t_fdf *fdf)
 	fdf->grid_height = 0;
 	if (!dst)
 	{
-		ft_printf("%sfail to open file, abort!%s\n", "\033[1;31m",
-			"\033[0m");
+		ft_printf("%sfail to open file, abort!%s\n", "\033[1;31m", "\033[0m");
 		exit(1);
 	}
 	while (dst[fdf->grid_height])
