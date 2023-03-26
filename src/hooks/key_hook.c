@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 21:16:20 by itan              #+#    #+#             */
-/*   Updated: 2023/03/27 00:44:29 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/27 03:15:07 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,27 @@ static void	other_func(int keycode, t_vars *vars)
 	display(vars);
 }
 
+static void	hue_manip(int keycode, t_vars *vars)
+{
+	if (keycode == KEY_R)
+		vars->fdf->base_hue += 10;
+	else if (keycode == KEY_F)
+		vars->fdf->base_hue -= 10;
+	else if (keycode == KEY_T)
+		vars->fdf->hue_range += 10;
+	else if (keycode == KEY_G)
+		vars->fdf->hue_range -= 10;
+	else
+		return ;
+	display(vars);
+}
+
 int	key_hook(int keycode, t_vars *vars)
 {
 	animate_to_view(keycode, vars);
 	arrow_keys_translate(keycode, vars);
 	other_func(keycode, vars);
+	hue_manip(keycode, vars);
 	if (keycode == KEY_ESC)
 	{
 		ft_printf("%sexiting the program%s\n", "\033[1;33m", "\033[0m");

@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:16:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/14 00:17:20 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/27 03:28:10 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ void	set_isomatric(t_fdf *fdf)
 	fdf->slerp_var.sign = 1;
 }
 
+static void	fdf_hue_init(t_fdf *fdf)
+{
+	fdf->base_hue = 0;
+	fdf->hue_range = 360;
+}
+
 static void	fdf_init(t_fdf *fdf, char *name)
 {
 	int	fd;
@@ -34,8 +40,7 @@ static void	fdf_init(t_fdf *fdf, char *name)
 	fd = open(name, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_printf("%sfail to open file, abort!%s\n", "\033[1;31m",
-			"\033[0m");
+		ft_printf("%sfail to open file, abort!%s\n", "\033[1;31m", "\033[0m");
 		exit(1);
 	}
 	fdf->focal_len = 300;
@@ -53,6 +58,7 @@ static void	fdf_init(t_fdf *fdf, char *name)
 	fdf->v_grid = NULL;
 	fdf->v_grid_global = NULL;
 	fdf->scale = 1;
+	fdf_hue_init(fdf);
 }
 
 int	main(int ac, char const **av)
@@ -62,8 +68,8 @@ int	main(int ac, char const **av)
 
 	ft_printf("%s", "\033[H\033[2J");
 	ft_printf("%sfdf!!!%s\n", "\033[1;32m", "\033[0m");
-	vars.win_h = 1000;
-	vars.win_w = 1000;
+	vars.win_h = 900;
+	vars.win_w = 1200;
 	vars.fdf = &fdf;
 	if (ac != 2)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/27 00:13:52 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/27 04:49:17 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ typedef struct s_fdf
 	t_image			*image;
 	t_hold			hold;
 	int				skip;
+	int				base_hue;
+	int				hue_range;
 }					t_fdf;
 
 typedef struct s_vars
@@ -156,6 +158,9 @@ int					mouse_move_hook(int x, int y, t_vars *vars);
 int					loop_hook(t_vars *vars);
 int					exit_hook(t_vars *vars);
 
+/* ---------------------------------- menu ---------------------------------- */
+void				display_menu(t_vars *vars);
+
 /* ------------------------------- projection ------------------------------- */
 t_offset			orthographic_projection(double v[3]);
 t_offset			perspective_projection(double v[3], double focal,
@@ -180,8 +185,8 @@ typedef struct s_e_convert_var
 	double			sp;
 }					t_e_convert_var;
 
-void	quaternion_from_euler3(double euler[3],
-							t_quaternion *output);
+void				quaternion_from_euler3(double euler[3],
+						t_quaternion *output);
 void				quaternion_to_euler3(t_quaternion *q, double output[3]);
 void				quaternion_conjugate(t_quaternion *q, t_quaternion *output);
 

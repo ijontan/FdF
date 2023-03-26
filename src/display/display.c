@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/07 15:16:13 by itan              #+#    #+#             */
-/*   Updated: 2023/03/13 20:37:35 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/27 04:49:17 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 static bool	check_outofbound(t_offset offset, t_vars *var, int border)
 {
 	if (offset.x >= var->win_w / 2 + border || offset.x <= -var->win_w / 2
-		- border || offset.y >= var->win_h / 2 + border || offset.y
-		<= -var->win_h / 2 - border)
+		- border || offset.y >= var->win_h / 2 + border || offset.y <=
+		-var->win_h / 2 - border)
 		return (true);
 	return (false);
 }
@@ -64,13 +64,13 @@ void	apply_rotation_and_translation(t_fdf *fdf)
 			tmp_v[2] = fdf->v_grid[i][j].v[2] * fdf->value_weight;
 			if (fdf->slerp_var.t < 1)
 				quaternion_rotate(&(fdf->slerp_var.out_o), tmp_v,
-					fdf->v_grid_global[i][j].v);
+						fdf->v_grid_global[i][j].v);
 			else
 				quaternion_rotate(&(fdf->orientation), tmp_v,
-					fdf->v_grid_global[i][j].v);
+						fdf->v_grid_global[i][j].v);
 			translate(fdf->v_grid_global[i][j].v, fdf->global_position[0]
-				/ fdf->scale, fdf->global_position[1] / fdf->scale,
-				fdf->global_position[2] / fdf->scale);
+					/ fdf->scale, fdf->global_position[1] / fdf->scale,
+					fdf->global_position[2] / fdf->scale);
 			scale(fdf->v_grid_global[i][j].v, fdf->scale);
 		}
 	}
@@ -89,8 +89,10 @@ static void	iterate_vertices(t_vars *var, t_fdf *fdf)
 		{
 			if (check_outofbound(
 					perspective_projection(fdf->v_grid_global[i][j].v,
-					fdf->focal_len, 25),
-				var, fdf->line_dis_2 * 4))
+											fdf->focal_len,
+											25),
+					var,
+					fdf->line_dis_2 * 4))
 				continue ;
 			if (fdf->v_grid_global[i][j].v[2] > fdf->focal_len)
 				continue ;
@@ -120,5 +122,6 @@ void	display(t_vars *var)
 	iterate_vertices(var, fdf);
 	mlx_clear_window(var->mlx, var->win);
 	mlx_put_image_to_window(var->mlx, var->win, image, 0, 0);
+	display_menu(var);
 	mlx_destroy_image(var->mlx, image);
 }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   dsiplay2.c                                         :+:      :+:    :+:   */
+/*   display2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/10 18:11:36 by itan              #+#    #+#             */
-/*   Updated: 2023/03/12 03:08:04 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/27 03:10:45 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,28 @@
 
 static int	get_hue_right(t_fdf *fdf, int i, int j, int step)
 {
+	double	ratio;
+
 	if (fdf->grid[i][j] >= fdf->grid[i][j + step])
-		return ((double)fdf->grid[i][j] / (double)(fdf->max_height
-				- fdf->min_height) * 24);
+		ratio = (double)fdf->grid[i][j] / (double)(fdf->max_height
+				- fdf->min_height);
 	else
-		return ((double)fdf->grid[i][j + step] / (double)(fdf->max_height
-				- fdf->min_height) * 24);
+		ratio = (double)fdf->grid[i][j + step] / (double)(fdf->max_height
+				- fdf->min_height);
+	return (fdf->base_hue + ratio * fdf->hue_range);
 }
 
 static int	get_hue_bot(t_fdf *fdf, int i, int j, int step)
 {
+	double	ratio;
+
 	if (fdf->grid[i][j] >= fdf->grid[i + step][j])
-		return ((double)fdf->grid[i][j] / (double)(fdf->max_height
-				- fdf->min_height) * 24);
+		ratio = (double)fdf->grid[i][j] / (double)(fdf->max_height
+				- fdf->min_height);
 	else
-		return ((double)fdf->grid[i + step][j] / (double)(fdf->max_height
-				- fdf->min_height) * 24);
+		ratio = (double)fdf->grid[i + step][j] / (double)(fdf->max_height
+				- fdf->min_height);
+	return (fdf->base_hue + ratio * fdf->hue_range);
 }
 
 void	choose_node_to_draw(t_vars *var, int i, int j, int skip)
