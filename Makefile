@@ -6,7 +6,7 @@
 #    By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:55:16 by itan              #+#    #+#              #
-#    Updated: 2023/03/10 21:00:41 by itan             ###   ########.fr        #
+#    Updated: 2023/03/27 00:14:35 by itan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ MLXLIB	= -I /usr/local/include -L/usr/local/lib -lbsd -lmlx -lXext -lX11
 endif
 ifeq ($(UNAME), Darwin)
 INC += -I /usr/local/include 
+CFLAGS += -D __APPLE__
 MLXLIB	= -I /usr/local/include -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
 endif
 

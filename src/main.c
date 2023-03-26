@@ -72,11 +72,11 @@ int	main(int ac, char const **av)
 	create_vertices(vars.fdf);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.win_w, vars.win_h, "fdf!!!");
-	mlx_hook(vars.win, 2, 0, key_hook, &vars);
-	mlx_hook(vars.win, 4, 0, mouse_hook_down, &vars);
-	mlx_hook(vars.win, 5, 0, mouse_hook_up, &vars);
-	mlx_hook(vars.win, 6, 0, mouse_move_hook, &vars);
-	mlx_hook(vars.win, 17, 0, exit_hook, &vars);
+	mlx_hook(vars.win, 2, (1L << 0), key_hook, &vars);
+	mlx_hook(vars.win, 4, (1L << 2), mouse_hook_down, &vars);
+	mlx_hook(vars.win, 5, (1L << 3), mouse_hook_up, &vars);
+	mlx_hook(vars.win, 6, (1L << 6), mouse_move_hook, &vars);
+	mlx_hook(vars.win, 17, (1L << 0), exit_hook, &vars);
 	mlx_loop_hook(vars.mlx, loop_hook, &vars);
 	set_isomatric(&fdf);
 	display(&vars);

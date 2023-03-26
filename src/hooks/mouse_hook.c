@@ -33,15 +33,15 @@ int	mouse_hook_down(int keycode, int x, int y, t_vars *vars)
 {
 	vars->fdf->hold.prev_x = x;
 	vars->fdf->hold.prev_y = y;
-	if (keycode == 1)
+	if (keycode == M_CLK_L)
 		vars->fdf->hold.left_m = true;
-	if (keycode == 2)
+	if (keycode == M_CLK_R)
 		vars->fdf->hold.right_m = true;
-	if (keycode == 3)
+	if (keycode == M_CLK_M)
 		vars->fdf->hold.middle_m = true;
-	if (keycode == 4)
+	if (keycode == M_SCR_U)
 		z_rot(vars, -0.1);
-	if (keycode == 5)
+	if (keycode == M_SCR_D)
 		z_rot(vars, 0.1);
 	return (0);
 }
@@ -50,11 +50,11 @@ int	mouse_hook_up(int keycode, int x, int y, t_vars *vars)
 {
 	(void)x;
 	(void)y;
-	if (keycode == 1)
+	if (keycode == M_CLK_L)
 		vars->fdf->hold.left_m = false;
-	if (keycode == 2)
+	if (keycode == M_CLK_R)
 		vars->fdf->hold.right_m = false;
-	if (keycode == 3)
+	if (keycode == M_CLK_M)
 		vars->fdf->hold.middle_m = false;
 	return (0);
 }

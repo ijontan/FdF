@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/13 20:46:38 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/27 00:13:52 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,10 @@
 # ifndef QUATERNION_EPS
 #  define QUATERNION_EPS (1e-4)
 # endif
-# ifndef LINUX
-#  define LINUX 0
-# endif
-# ifndef DARWIN
-#  define DARWIN 0
+# if defined(__APPLE__)
+#  include <key_macos.h>
+# else
+#  include <key_linux.h>
 # endif
 
 typedef struct s_vertex
@@ -137,6 +136,8 @@ void				swap(int *a, int *b);
 float				absolute(float x);
 float				frac_num(float x);
 float				rfrac_num(float x);
+void				set_all_black(t_vars *var);
+
 /* ----------------------------------- err ---------------------------------- */
 void				fdf_exit(t_vars *vars, int errno);
 
@@ -154,6 +155,7 @@ int					mouse_hook_up(int keycode, int x, int y, t_vars *vars);
 int					mouse_move_hook(int x, int y, t_vars *vars);
 int					loop_hook(t_vars *vars);
 int					exit_hook(t_vars *vars);
+
 /* ------------------------------- projection ------------------------------- */
 t_offset			orthographic_projection(double v[3]);
 t_offset			perspective_projection(double v[3], double focal,
@@ -178,8 +180,8 @@ typedef struct s_e_convert_var
 	double			sp;
 }					t_e_convert_var;
 
-void				quaternion_from_euler3(double euler[3],
-						t_quaternion *output);
+void	quaternion_from_euler3(double euler[3],
+							t_quaternion *output);
 void				quaternion_to_euler3(t_quaternion *q, double output[3]);
 void				quaternion_conjugate(t_quaternion *q, t_quaternion *output);
 

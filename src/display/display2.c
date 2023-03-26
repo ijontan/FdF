@@ -55,3 +55,26 @@ void	choose_node_to_draw(t_vars *var, int i, int j, int skip)
 		plot_line(var, start, end2, get_hue_bot(fdf, i, j, skip));
 	}
 }
+
+void	set_all_black(t_vars *var)
+{
+	int		pixel;
+	int		i;
+	int		j;
+	t_image	*image;
+
+	image = var->fdf->image;
+	i = -1;
+	while (++i < var->win_h)
+	{
+		j = -1;
+		while (++j < var->win_w)
+		{
+			pixel = (i * image->line_bytes) + (j * image->pixel_bits / 8);
+			if (image->endian == 1)
+				image->buffer[pixel + 0] = 0xff;
+			else
+				image->buffer[pixel + 3] = 0xff;
+		}
+	}
+}

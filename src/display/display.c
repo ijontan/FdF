@@ -115,6 +115,7 @@ void	display(t_vars *var)
 	if (!image_v.buffer)
 		return ;
 	fdf->skip = 1 / (fdf->line_dis_2 * 0.9) + 1;
+	set_all_black(var);
 	apply_rotation_and_translation(fdf);
 	iterate_vertices(var, fdf);
 	mlx_clear_window(var->mlx, var->win);
