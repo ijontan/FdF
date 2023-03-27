@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/27 04:49:17 by itan             ###   ########.fr       */
+/*   Updated: 2023/03/27 17:31:22 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 # include <fcntl.h>
 # include <mlx.h>
 # include <stdbool.h>
-# ifndef QUATERNION_EPS
-#  define QUATERNION_EPS (1e-4)
-# endif
+
 # if defined(__APPLE__)
 #  include <key_macos.h>
 # else
@@ -34,13 +32,6 @@ typedef struct s_vertex
 	struct s_vertex	*top;
 	struct s_vertex	*bot;
 }					t_vertex;
-
-// credit to https://github.com/MartinWeigel/Quaternion
-typedef struct s_quaternion
-{
-	double			w;
-	double			v[3];
-}					t_quaternion;
 
 typedef struct s_offset
 {
@@ -166,70 +157,6 @@ t_offset			orthographic_projection(double v[3]);
 t_offset			perspective_projection(double v[3], double focal,
 						double screen_p);
 
-/* ------------------------------- quaternion ------------------------------- */
-
-void				quaternion_from_axis_angle(double axis[3], double angle,
-						t_quaternion *output);
-double				quaternion_to_axis_angle(t_quaternion *q, double output[3]);
-void				quaternion_x_rotation(double angle, t_quaternion *output);
-void				quaternion_y_rotation(double angle, t_quaternion *output);
-void				quaternion_z_rotation(double angle, t_quaternion *output);
-
-typedef struct s_e_convert_var
-{
-	double			cy;
-	double			sy;
-	double			cr;
-	double			sr;
-	double			cp;
-	double			sp;
-}					t_e_convert_var;
-
-void				quaternion_from_euler3(double euler[3],
-						t_quaternion *output);
-void				quaternion_to_euler3(t_quaternion *q, double output[3]);
-void				quaternion_conjugate(t_quaternion *q, t_quaternion *output);
-
-t_quaternion		quaternion_create(double w, double v0, double v1,
-						double v2);
-t_quaternion		quaternion_create_id(void);
-t_quaternion		quaternion_dup(t_quaternion *q);
-bool				quaternion_equal(t_quaternion *q1, t_quaternion *q2);
-double				quaternion_norm(t_quaternion *q);
-void				quaternion_normalize(t_quaternion *q, t_quaternion *output);
-void				quaternion_multiply(t_quaternion *q1, t_quaternion *q2,
-						t_quaternion *output);
-
-typedef struct s_q_rot_var
-{
-	double			ww;
-	double			xx;
-	double			yy;
-	double			zz;
-	double			wx;
-	double			wy;
-	double			wz;
-	double			xy;
-	double			xz;
-	double			yz;
-}					t_q_rot_var;
-
-void				quaternion_rotate(t_quaternion *q, double v[3],
-						double output[3]);
-
-typedef struct s_q_slerp_var
-{
-	double			cos_half_theta;
-	double			half_theta;
-	double			sin_half_theta;
-	double			ratio_a;
-	double			ratio_b;
-	t_quaternion	*q1;
-	t_quaternion	*q2;
-}					t_q_slerp_var;
-
-void				quaternion_slerp(t_quaternion *q1, t_quaternion *q2,
-						double t, t_quaternion *output);
 /* -------------------------------- transform ------------------------------- */
 void				scale(double v[3], double scale_factor);
 void				translate(double v[3], double x, double y, double z);
