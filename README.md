@@ -30,12 +30,12 @@ if you want to run this on window, need to setup a virtual machine.
 2. clone the project with
 
 ```sh
-git clone --recurse-submodules https://github.com/ijontan/minishell.git
+git clone --recurse-submodules https://github.com/ijontan/FdF.git
 ```
 or
 
 ```sh
-git clone https://github.com/ijontan/minishell.git
+git clone https://github.com/ijontan/FdF.git
 git submodule init
 git submodule update
 ```
