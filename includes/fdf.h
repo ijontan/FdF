@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 15:53:35 by itan              #+#    #+#             */
-/*   Updated: 2023/03/27 17:31:22 by itan             ###   ########.fr       */
+/*   Updated: 2025/06/11 22:41:28 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define BUFFER_SIZE 1000
 # include "libft.h"
 # include <fcntl.h>
-# include <mlx.h>
+# include "mlx.h"
 # include <stdbool.h>
 
 # if defined(__APPLE__)

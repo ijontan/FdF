@@ -6,7 +6,7 @@
 #    By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/09/18 20:55:16 by itan              #+#    #+#              #
-#    Updated: 2023/03/27 00:14:35 by itan             ###   ########.fr        #
+#    Updated: 2025/06/11 23:41:31 by itan             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,12 +40,12 @@ DOBJ	= $(DSRC:.c=.o)
 UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
-MLXLIB	= -I /usr/local/include -L/usr/local/lib -lbsd -lmlx -lXext -lX11
+MLXLIB	= -I ./mlx -L./mlx/ -lmlx_Linux -lbsd -lXext -lX11
 endif
 ifeq ($(UNAME), Darwin)
-INC += -I /usr/local/include 
+INC += -I./mlx
 CFLAGS += -D __APPLE__
-MLXLIB	= -I /usr/local/include -L/usr/local/lib -lmlx -framework OpenGL -framework AppKit
+MLXLIB	= -I ./mlx -L./mlx/ -lmlx -framework OpenGL -framework AppKit
 endif
 
 
@@ -75,14 +75,14 @@ UNDERLINE	= \033[3m
 $(OBJ_DIR)/%.o:	$(SRC_DIR)/%.c
 				@mkdir -p $(OBJ_DIRS)
 				@printf "$(YELLOW)$(BRIGHT)Generating %25s\t$(NORMAL)%40s\r" "$(NAME) src objects..." $@
-				@$(CC) $(CFLAGS) $(INC) -c $< -o $@
+				@$(CC) $(CFLAGS) $(INC) $(MLXLIB) -c $< -o $@
 
 $(DDIR)/%.o:	$(DDIR)/%.c
 				@mkdir -p $(DDIR)
 				@printf "$(YELLOW)$(BRIGHT)Generating %25s\t$(NORMAL)%40s\r" "$(NAME) debug objects..." $@
-				@$(CC) $(CFLAGS) $(INC) -c $< -o $@
+				@$(CC) $(CFLAGS) $(INC) $(MLXLIB) -c $< -o $@
 
-$(NAME)::	$(LIBDIR)/$(LIBNAME) $(OBJ) 
+$(NAME)::	mlx/libmlx.a $(LIBDIR)/$(LIBNAME) $(OBJ) 
 			@printf "\n$(MAGENTA)$(BRIGHT)Compiling $(NAME)...          \n"
 			@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME) $(LIB) $(MLXLIB)
 			@printf "$(GREEN)COMPLETE!!\n\n"
@@ -94,6 +94,9 @@ $(DNAME):	$(SRC) $(DSRC) $(LIBDIR)/$(LIBNAME)
 
 $(LIBDIR)/$(LIBNAME):
 		@make -C $(LIBDIR) --no-print-directory
+
+mlx/libmlx.a:
+		@make CC=clang -C mlx --no-print-directory
 
 debug:	$(DNAME)
 

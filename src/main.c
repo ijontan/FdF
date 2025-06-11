@@ -6,15 +6,15 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/17 16:16:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/27 03:28:10 by itan             ###   ########.fr       */
+/*   Updated: 2025/06/11 22:55:34 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-void	set_isomatric(t_fdf *fdf)
+void set_isomatric(t_fdf *fdf)
 {
-	t_quaternion	q1;
+	t_quaternion q1;
 
 	quaternion_z_rotation(-PI_4, &q1);
 	quaternion_multiply(&q1, &fdf->orientation, &fdf->orientation);
@@ -27,15 +27,15 @@ void	set_isomatric(t_fdf *fdf)
 	fdf->slerp_var.sign = 1;
 }
 
-static void	fdf_hue_init(t_fdf *fdf)
+static void fdf_hue_init(t_fdf *fdf)
 {
 	fdf->base_hue = 0;
 	fdf->hue_range = 360;
 }
 
-static void	fdf_init(t_fdf *fdf, char *name)
+static void fdf_init(t_fdf *fdf, char *name)
 {
-	int	fd;
+	int fd;
 
 	fd = open(name, O_RDONLY);
 	if (fd == -1)
@@ -61,10 +61,10 @@ static void	fdf_init(t_fdf *fdf, char *name)
 	fdf_hue_init(fdf);
 }
 
-int	main(int ac, char const **av)
+int main(int ac, char const **av)
 {
-	t_vars	vars;
-	t_fdf	fdf;
+	t_vars vars;
+	t_fdf fdf;
 
 	ft_printf("%s", "\033[H\033[2J");
 	ft_printf("%sfdf!!!%s\n", "\033[1;32m", "\033[0m");
@@ -78,12 +78,12 @@ int	main(int ac, char const **av)
 	create_vertices(vars.fdf);
 	vars.mlx = mlx_init();
 	vars.win = mlx_new_window(vars.mlx, vars.win_w, vars.win_h, "fdf!!!");
-	mlx_hook(vars.win, 2, (1L << 0), key_hook, &vars);
-	mlx_hook(vars.win, 4, (1L << 2), mouse_hook_down, &vars);
-	mlx_hook(vars.win, 5, (1L << 3), mouse_hook_up, &vars);
-	mlx_hook(vars.win, 6, (1L << 6), mouse_move_hook, &vars);
-	mlx_hook(vars.win, 17, (1L << 0), exit_hook, &vars);
-	mlx_loop_hook(vars.mlx, loop_hook, &vars);
+	mlx_hook(vars.win, 2, (1L << 0), (void *)key_hook, &vars);
+	mlx_hook(vars.win, 4, (1L << 2), (void *)mouse_hook_down, &vars);
+	mlx_hook(vars.win, 5, (1L << 3), (void *)mouse_hook_up, &vars);
+	mlx_hook(vars.win, 6, (1L << 6), (void *)mouse_move_hook, &vars);
+	mlx_hook(vars.win, 17, (1L << 0), (void *)exit_hook, &vars);
+	mlx_loop_hook(vars.mlx, (void *)loop_hook, &vars);
 	set_isomatric(&fdf);
 	display(&vars);
 	mlx_loop(vars.mlx);

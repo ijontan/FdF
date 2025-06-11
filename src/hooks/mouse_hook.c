@@ -6,7 +6,7 @@
 /*   By: itan <itan@student.42kl.edu.my>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/02 21:30:50 by itan              #+#    #+#             */
-/*   Updated: 2023/03/13 20:40:11 by itan             ###   ########.fr       */
+/*   Updated: 2025/06/11 23:35:08 by itan             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,14 @@ static void	xy_rot(int x, int y, t_vars *vars)
 
 int	mouse_move_hook(int x, int y, t_vars *vars)
 {
+	static int step = 0;
+
+	++step;
+	if (step == 10)
+	{
+		step = 0;
+		return (0);
+	}
 	if (vars->fdf->hold.right_m)
 		xy_rot(x, y, vars);
 	if (vars->fdf->hold.left_m)
